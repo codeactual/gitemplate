@@ -124,31 +124,27 @@
         var sprintf;
         var fs;
         var shelljs;
+        var exec;
         var util;
         var defShellOpt = {
-            async: true,
             silent: true
         };
-        function exec(cmd, cb) {
-            shelljs.exec(cmd, defShellOpt, cb);
-        }
         function Gitemplate() {
             this.settings = {
-                name: null,
-                fs: null,
-                shelljs: null,
-                util: null
+                name: null
             };
         }
         configurable(Gitemplate.prototype);
         Gitemplate.prototype.init = function() {
-            fs = this.get("fs");
-            shelljs = this.get("shelljs");
-            util = this.get("util");
+            var nativeRequire = this.get("nativeRequire");
+            fs = nativeRequire("fs");
+            shelljs = nativeRequire("shelljs");
+            exec = shelljs.exec;
+            util = nativeRequire("util");
             sprintf = util.format;
         };
-        Gitemplate.prototype.cloneRepo = function(src, dst, cb) {
-            exec(sprintf("git clone %s %s", src, dst), cb);
+        Gitemplate.prototype.cloneRepo = function(src, dst) {
+            return exec(sprintf("git clone %s %s", src, dst), defShellOpt);
         };
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");
