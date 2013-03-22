@@ -13,7 +13,6 @@ var gitemplate = require('./build/build');
 var Gitemplate = gitemplate.Gitemplate;
 
 gitemplate.require('sinon-doublist')(sinon, 'mocha');
-gitemplate.require('sinon-doublist-fs')(fs, 'mocha');
 
 describe('gitemplate', function() {
   before(function() {
@@ -27,19 +26,18 @@ describe('gitemplate', function() {
       shelljs.rm('-rf', this.dst);
       this.gt = new Gitemplate();
       this.gt.set('name', this.name).set('nativeRequire', require).init();
-      this.res = this.gt.cloneRepo(this.src, this.dst);
     });
 
     it('should begin with successful clone', function() {
-      this.res.code.should.equal(0);
-    });
-
-    it('should name directory', function() {
-      console.log('\x1B[33mINCOMPLETE'); // TODO
+      var res = this.gt.cloneRepo(this.src, this.dst);
+      res.code.should.equal(0);
     });
 
     it('should delete .git/', function() {
-      console.log('\x1B[33mINCOMPLETE'); // TODO
+      var dir = this.dst + '/.git';
+      fs.existsSync(dir).should.equal(true);
+      this.gt.rmGitDir(this.dst);
+      fs.existsSync(dir).should.equal(false);
     });
 
     it('should expand name macros', function() {

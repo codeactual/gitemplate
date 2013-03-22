@@ -146,6 +146,9 @@
         Gitemplate.prototype.cloneRepo = function(src, dst) {
             return exec(sprintf("git clone %s %s", src, dst), defShellOpt);
         };
+        Gitemplate.prototype.rmGitDir = function(dst) {
+            shelljs.rm("-rf", dst + "/.git");
+        };
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");
     if (typeof exports == "object") {

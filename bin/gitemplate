@@ -32,5 +32,5 @@ requiredParams.forEach(function(param) {
 });
 
 abortOnErrorResult(gt.cloneRepo(cli.src, cli.dst));
-gt.rmGitDir(cli.dst)
+gt.rmGitDir(cli.dst);
 
