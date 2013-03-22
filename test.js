@@ -26,7 +26,11 @@ describe('gitemplate', function() {
   describe('Gitemplate', function() {
     beforeEach(function() {
       this.gt = new Gitemplate();
-      this.gt.set('name', this.name).set('nativeRequire', require).init();
+      this.gt
+        .set('name', this.name)
+        .set('src', this.src)
+        .set('dst', this.dst)
+        .set('nativeRequire', require).init();
     });
 
     it('should clone repo', function() {

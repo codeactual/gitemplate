@@ -41,17 +41,18 @@ Gitemplate.prototype.init = function() {
 };
 
 /**
- * @param {string} src Any valid `git clone` source.
- * @param {string} dst Local clone destination.
  * @return {object} shelljs exec() result.
  */
-Gitemplate.prototype.cloneRepo = function(src, dst) {
-  return shelljs.exec(sprintf('git clone %s %s', src, dst), defShellOpt);
+Gitemplate.prototype.cloneRepo = function() {
+  return shelljs.exec(
+    sprintf('git clone %s %s', this.get('src'), this.get('dst')),
+    defShellOpt
+  );
 };
 
-/**
- * @param {string} dst Local clone destination.
- */
-Gitemplate.prototype.rmGitDir = function(dst) {
-  shelljs.rm('-r', dst + '/.git');
+Gitemplate.prototype.rmGitDir = function() {
+  shelljs.rm('-r', this.get('dst') + '/.git');
+};
+
+Gitemplate.prototype.expandMacros = function(dst) {
 };
