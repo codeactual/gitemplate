@@ -114,28 +114,47 @@
             return obj;
         };
     });
-    require.register("compake/index.js", function(exports, require, module) {
+    require.register("gitemplate/index.js", function(exports, require, module) {
         "use strict";
         module.exports = {
-            Compake: Compake
+            Gitemplate: Gitemplate,
+            require: require
         };
         var configurable = require("configurable.js");
-        function Compake() {
+        var sprintf;
+        var fs;
+        var shelljs;
+        var util;
+        var doAsync = {
+            async: true
+        };
+        function Gitemplate() {
             this.settings = {
-                name: ""
+                name: null,
+                fs: null,
+                shelljs: null,
+                util: null
             };
         }
-        throw new Error();
-        configurable(Compake.prototype);
+        configurable(Gitemplate.prototype);
+        Gitemplate.prototype.init = function() {
+            fs = this.get("fs");
+            shelljs = this.get("shelljs");
+            util = this.get("util");
+            sprintf = util.format;
+        };
+        Gitemplate.prototype.cloneRepo = function(src, dst, cb) {
+            shelljs.exec(sprintf("git clone %s %s", src, dst), doAsync, cb);
+        };
     });
-    require.alias("visionmedia-configurable.js/index.js", "compake/deps/configurable.js/index.js");
+    require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");
     if (typeof exports == "object") {
-        module.exports = require("compake");
+        module.exports = require("gitemplate");
     } else if (typeof define == "function" && define.amd) {
         define(function() {
-            return require("compake");
+            return require("gitemplate");
         });
     } else {
-        window["compake"] = require("compake");
+        window["gitemplate"] = require("gitemplate");
     }
 })();

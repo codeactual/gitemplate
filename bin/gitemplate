@@ -1,15 +1,35 @@
 #!/usr/bin/env node
 
+var util = require('util');
 var cli = require('commander');
 var Gitemplate = require(__dirname + '/../dist/gitemplate').Gitemplate;
 
 cli
-  .option('-n, --name <component>', '', String)
+  .option('-n, --name <new component>', '', String)
+  .option('-s, --src <source repo>', '', String)
+  .option('-d, --dst <destination dir>', '', String)
   .parse(process.argv);
 
+var gt = new Gitemplate();
+gt
+  .set('name', cli.name)
+  .set('fs', require('fs'))
+  .set('util', require('util'))
+  .set('shelljs', require('shelljs'))
+  .init();
 
-var gitemplate = new Gitemplate();
-gitemplate.set('name', cli.name);
+function abort(msg, code) {
+  util.error(msg);
+  process.exit(typeof code === 'undefined' ? 1 : code);
+}
 
-console.log('input name:', cli.name);
-console.log('setting name:', gitemplate.get('name'));
+var requiredParams = ['name', 'src', 'dst'];
+
+requiredParams.forEach(function(param) {
+  if (!cli[param]) { abort('--' + param + ' required'); }
+});
+
+gt.cloneRepo(cli.src, cli.dst, function(code, output) {
+  if (code !== 0) { abort(output, code); return; }
+  console.log('cloned');
+});

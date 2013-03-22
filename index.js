@@ -14,22 +14,37 @@ module.exports = {
 };
 
 var configurable = require('configurable.js');
+var sprintf;
+var fs;
+var shelljs;
+var util;
+var doAsync = {async: true};
 
-function Gitemplate(fs) {
+function Gitemplate() {
   this.settings = {
-    fs: fs,
-    name: ''
+    name: null,
+    fs: null,
+    shelljs: null,
+    util: null
   };
 }
 
 configurable(Gitemplate.prototype);
 
-Gitemplate.USER_CONFIG_PATH = process.env.HOME + '/.gitemplate.js';
+/**
+ * Apply collected configuration.
+ */
+Gitemplate.prototype.init = function() {
+  fs = this.get('fs');
+  shelljs = this.get('shelljs');
+  util = this.get('util');
+  sprintf = util.format;
+};
 
-Gitemplate.prototype.readUserConfig = function(path) {
-  var self = this;
-  var config = require(Gitemplate.USER_CONFIG_PATH);
-  Object.keys(config).forEach(function(key) {
-    self.set(key, config[key]);
-  });
+/**
+ * @param {string} src Any valid `git clone` source.
+ * @param {string} dst Local clone destination.
+ */
+Gitemplate.prototype.cloneRepo = function(src, dst, cb) {
+  shelljs.exec(sprintf('git clone %s %s', src, dst), doAsync, cb);
 };
