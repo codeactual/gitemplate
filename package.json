@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "commander": "~1.1.1",
-    "component": "~0.13.1"
+    "component": "~0.13.1",
+    "shelljs": "~0.1.2"
   },
   "preferGlobal": true,
   "bin": "./bin/gitemplate"
