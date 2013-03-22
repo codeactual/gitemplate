@@ -28,5 +28,6 @@
   "dependencies": {
     "commander": "~1.1.1",
     "component": "~0.13.1"
-  }
+  },
+  "preferGlobal": true
 }
