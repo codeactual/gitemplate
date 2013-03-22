@@ -13,55 +13,31 @@ gitemplate.require('sinon-doublist-fs')(fs, 'mocha');
 
 describe('gitemplate', function() {
   describe('Gitemplate', function() {
-    it('should read from user config from default file', function(testDone) {
+    it('should clone a git repo', function(testDone) {
       console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
     });
 
-    it('should add license from local file', function(testDone) {
+    it('should gracefully exit on failed clone', function(testDone) {
+      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
+    });
+  });
+
+  describe('Post-clone processing', function() {
+    before(function(hookDone) {
+      // TODO delete old clone if present
+      // TODO one clone operation shared by all assertions below
+      hookDone();
+    });
+
+    it('should name directory', function(testDone) {
       console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
     });
 
-    it('should add license from Github', function(testDone) {
+    it('should delete .git/', function(testDone) {
       console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
     });
 
-    it('should add TravisCI config', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add test.js', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add index.js', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add test.js', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add component.json', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add package.json', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add Gruntfile.json', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add .gitignore', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should add README', function(testDone) {
-      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
-    });
-
-    it('should init git repo', function(testDone) {
+    it('should expand name macros', function(testDone) {
       console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
     });
   });
