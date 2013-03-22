@@ -33,7 +33,7 @@ configurable(Gitemplate.prototype);
  * Apply collected configuration.
  */
 Gitemplate.prototype.init = function() {
-  var nativeRequire = this.get('require');
+  var nativeRequire = this.get('nativeRequire');
   fs = nativeRequire('fs');
   shelljs = nativeRequire('shelljs');
   exec = shelljs.exec;

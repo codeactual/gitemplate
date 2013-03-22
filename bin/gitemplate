@@ -13,7 +13,7 @@ cli
 var gt = new Gitemplate();
 gt
   .set('name', cli.name)
-  .set('require', require)
+  .set('nativeRequire', require)
   .init();
 
 function abort(msg, code) {
