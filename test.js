@@ -35,7 +35,7 @@ describe('gitemplate', function() {
 
     it('should clone repo', function() {
       var stub = this.stub(shelljs, 'exec');
-      this.gt.cloneRepo(this.src, this.dst);
+      this.gt.cloneRepo();
       stub.should.have.been.calledWith(
         sprintf('git clone %s %s', this.src, this.dst)
       );
@@ -43,7 +43,7 @@ describe('gitemplate', function() {
 
     it('should remove .git/', function() {
       var stub = this.stub(shelljs, 'rm');
-      this.gt.rmGitDir(this.dst);
+      this.gt.rmGitDir();
       stub.should.have.been.calledWithExactly('-r', this.dst + '/.git');
     });
 
