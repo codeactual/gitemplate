@@ -1,6 +1,6 @@
 # gitemplate
 
-Make a component from templates
+Create Git repositories from templates on GitHub.
 
 [![Build Status](https://travis-ci.org/codeactual/gitemplate.png)](https://travis-ci.org/codeactual/gitemplate)
 

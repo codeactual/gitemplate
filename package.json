@@ -1,7 +1,7 @@
 {
   "name": "gitemplate",
   "version": "0.1.0",
-  "description": "Make a component from templates",
+  "description": "Create Git repositories from templates on GitHub",
   "main": "index.js",
   "scripts": {
     "test": "grunt build && mocha --async-only --reporter spec test.js"

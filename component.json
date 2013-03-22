@@ -1,7 +1,7 @@
 {
   "name": "gitemplate",
   "repo": "codeactual/gitemplate",
-  "description": "Make a component from templates",
+  "description": "Create Git repositories from templates on GitHub",
   "version": "0.1.0",
   "keywords": [
     "component",

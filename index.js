@@ -1,5 +1,5 @@
 /**
- * Make a component from templates.
+ * Create Git repositories from templates on GitHub.
  *
  * Licensed under MIT.
  * Copyright (c) 2013 David Smith <https://github.com/codeactual/>
