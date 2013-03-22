@@ -9,4 +9,17 @@
 'use strict';
 
 module.exports = {
+  Compake: Compake
 };
+
+var configurable = require('configurable.js');
+
+function Compake() {
+  this.settings = {
+    'name': ''
+  };
+}
+
+throw new Error();
+
+configurable(Compake.prototype);

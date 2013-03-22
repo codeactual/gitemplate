@@ -4,7 +4,7 @@
   "description": "Make a component from templates",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --async-only --reporter spec test.js"
+    "test": "grunt build && mocha --async-only --reporter spec test.js"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,14 @@
     "grunt": "~0.4.1",
     "mocha": "~1.8.2",
     "sinon": "~1.6.0",
-    "grunt-contrib-jshint": "~0.3.0"
+    "grunt-contrib-jshint": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-shell": "~0.2.1"
   },
   "dependencies": {
     "commander": "~1.1.1",
     "component": "~0.13.1"
   },
-  "preferGlobal": true
+  "preferGlobal": true,
+  "bin": "./bin/compake"
 }

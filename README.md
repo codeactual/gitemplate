@@ -4,6 +4,11 @@ Make a component from templates
 
 [![Build Status](https://travis-ci.org/codeactual/compake.png)](https://travis-ci.org/codeactual/compake)
 
+## Minimal Scaffolding
+
+* Grunt config.
+* Mocha test w/ sinon and chai.
+
 ## Installation
 
 ### [Component](https://github.com/component/component)
@@ -12,9 +17,9 @@ Install to `components/`:
 
     $ component install codeactual/compake
 
-Build standalone file in `build/`:
+Build new standalone file:
 
-    $ make dist
+    $ grunt dist
 
 ## API
 
