@@ -1,0 +1,30 @@
+{
+  "name": "compake",
+  "version": "0.1.0",
+  "description": "Make a component from templates",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --async-only --reporter spec test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/codeactual/compake.git"
+  },
+  "keywords": [
+    "component",
+    "package",
+    "scaffolding",
+    "generator"
+  ],
+  "author": "David Smith",
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "~1.5.0",
+    "mocha": "~1.8.2",
+    "sinon": "~1.6.0"
+  },
+  "dependencies": {
+    "commander": "~1.1.1",
+    "component": "~0.13.1"
+  }
+}

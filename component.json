@@ -1,0 +1,21 @@
+{
+  "name": "compake",
+  "repo": "codeactual/compake",
+  "description": "Make a component from templates",
+  "version": "0.1.0",
+  "keywords": [
+    "component",
+    "package",
+    "scaffolding",
+    "generator"
+  ],
+  "dependencies": {
+  },
+  "development": {
+    "codeactual/sinon-doublist-fs": "0.1.1"
+  },
+  "scripts": [
+    "index.js"
+  ],
+  "license": "MIT"
+}
