@@ -1,5 +1,5 @@
 /**
- * Create Git repositories from templates on GitHub.
+ * Create a new Git repo from a templates in an existing repo.
  *
  * Licensed under MIT.
  * Copyright (c) 2013 David Smith <https://github.com/codeactual/>

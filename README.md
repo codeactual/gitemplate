@@ -1,6 +1,6 @@
 # gitemplate
 
-Create Git repositories from templates on GitHub.
+Create a new Git repo from a templates in an existing repo.
 
 [![Build Status](https://travis-ci.org/codeactual/gitemplate.png)](https://travis-ci.org/codeactual/gitemplate)
 
