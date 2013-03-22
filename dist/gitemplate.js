@@ -125,9 +125,13 @@
         var fs;
         var shelljs;
         var util;
-        var doAsync = {
-            async: true
+        var defShellOpt = {
+            async: true,
+            silent: true
         };
+        function exec(cmd, cb) {
+            shelljs.exec(cmd, defShellOpt, cb);
+        }
         function Gitemplate() {
             this.settings = {
                 name: null,
@@ -144,7 +148,7 @@
             sprintf = util.format;
         };
         Gitemplate.prototype.cloneRepo = function(src, dst, cb) {
-            shelljs.exec(sprintf("git clone %s %s", src, dst), doAsync, cb);
+            exec(sprintf("git clone %s %s", src, dst), cb);
         };
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");

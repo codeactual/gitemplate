@@ -31,5 +31,4 @@ requiredParams.forEach(function(param) {
 
 gt.cloneRepo(cli.src, cli.dst, function(code, output) {
   if (code !== 0) { abort(output, code); return; }
-  console.log('cloned');
 });
