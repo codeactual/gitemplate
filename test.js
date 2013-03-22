@@ -11,46 +11,39 @@ chai.use(require('sinon-chai'));
 
 var gitemplate = require('./build/build');
 var Gitemplate = gitemplate.Gitemplate;
+var requireComponent = gitemplate.require;
 
-gitemplate.require('sinon-doublist')(sinon, 'mocha');
+requireComponent('sinon-doublist')(sinon, 'mocha');
+requireComponent('sinon-doublist-fs')(fs, 'mocha');
 
 describe('gitemplate', function() {
   before(function() {
     this.name = 'mycomponent';
-    this.src = __dirname + '/.git';
-    this.dst = __dirname + '/tmp/clone';
+    this.src = '/path/to/src';
+    this.dst = '/path/to/dst';
   });
 
-  describe('Post-clone processing', function() {
-    before(function() {
-      shelljs.rm('-rf', this.dst);
+  describe('Gitemplate', function() {
+    beforeEach(function() {
       this.gt = new Gitemplate();
       this.gt.set('name', this.name).set('nativeRequire', require).init();
     });
 
-    it('should begin with successful clone', function() {
-      var res = this.gt.cloneRepo(this.src, this.dst);
-      res.code.should.equal(0);
+    it('should clone repo', function() {
+      var stub = this.stub(shelljs, 'exec');
+      this.gt.cloneRepo(this.src, this.dst);
+      stub.should.have.been.calledWith(
+        sprintf('git clone %s %s', this.src, this.dst)
+      );
     });
 
-    it('should delete .git/', function() {
-      var dir = this.dst + '/.git';
-      fs.existsSync(dir).should.equal(true);
+    it('should remove .git/', function() {
+      var stub = this.stub(shelljs, 'rm');
       this.gt.rmGitDir(this.dst);
-      fs.existsSync(dir).should.equal(false);
+      stub.should.have.been.calledWithExactly('-r', this.dst + '/.git');
     });
 
     it('should expand name macros', function() {
-      console.log('\x1B[33mINCOMPLETE'); // TODO
-    });
-  });
-
-  describe('CLI', function() {
-    it('should not init git repo by default', function() {
-      console.log('\x1B[33mINCOMPLETE'); // TODO
-    });
-
-    it('should display full destination path', function() {
       console.log('\x1B[33mINCOMPLETE'); // TODO
     });
   });
