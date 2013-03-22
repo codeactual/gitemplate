@@ -139,15 +139,17 @@
             var nativeRequire = this.get("nativeRequire");
             fs = nativeRequire("fs");
             shelljs = nativeRequire("shelljs");
-            exec = shelljs.exec;
             util = nativeRequire("util");
             sprintf = util.format;
         };
-        Gitemplate.prototype.cloneRepo = function(src, dst) {
-            return exec(sprintf("git clone %s %s", src, dst), defShellOpt);
+        Gitemplate.prototype.cloneRepo = function() {
+            return shelljs.exec(sprintf("git clone %s %s", this.get("src"), this.get("dst")), defShellOpt);
         };
-        Gitemplate.prototype.rmGitDir = function(dst) {
-            shelljs.rm("-rf", dst + "/.git");
+        Gitemplate.prototype.rmGitDir = function() {
+            shelljs.rm("-rf", this.get("dst") + "/.git");
+        };
+        Gitemplate.prototype.expandMacros = function() {
+            return shelljs.exec(sprintf("find %s -type f -exec perl -p -i -e 's/\\{\\{gitemplate\\.name\\}\\}/%s/g' {} \\;", this.get("dst"), this.get("name")), defShellOpt);
         };
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");

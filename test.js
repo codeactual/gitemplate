@@ -19,8 +19,8 @@ requireComponent('sinon-doublist-fs')(fs, 'mocha');
 describe('gitemplate', function() {
   before(function() {
     this.name = 'mycomponent';
-    this.src = '/path/to/src';
-    this.dst = '/path/to/dst';
+    this.src = '/src';
+    this.dst = '/dst';
   });
 
   describe('Gitemplate', function() {
@@ -36,20 +36,20 @@ describe('gitemplate', function() {
     it('should clone repo', function() {
       var stub = this.stub(shelljs, 'exec');
       this.gt.cloneRepo();
-      stub.should.have.been.calledWith('git clone /path/to/src /path/to/dst');
+      stub.should.have.been.calledWith('git clone /src /dst');
     });
 
     it('should remove .git/', function() {
       var stub = this.stub(shelljs, 'rm');
       this.gt.rmGitDir();
-      stub.should.have.been.calledWithExactly('-r', '/path/to/dst/.git');
+      stub.should.have.been.calledWithExactly('-rf', '/dst/.git');
     });
 
     it('should expand name macros', function() {
       var stub = this.stub(shelljs, 'exec');
       this.gt.expandMacros();
       stub.should.have.been.calledWith(
-        'perl -p -i -e "s/{{gitemplate.name}}/mycomponent/g" /path/to/dst/**/*'
+        "find /dst -type f -exec perl -p -i -e 's/\\{\\{gitemplate\\.name\\}\\}/mycomponent/g' {} \\;"
       );
     });
   });
