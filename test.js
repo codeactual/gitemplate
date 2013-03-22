@@ -1,10 +1,22 @@
+var sinon = require('sinon');
 var chai = require('chai');
 
 var should = chai.should();
 chai.Assertion.includeStack = true;
 
+var fs = require('fs');
+var compake = require('./build/build');
+var Compake = compake.Compake;
+
+compake.require('sinon-doublist')(sinon, 'mocha');
+compake.require('sinon-doublist-fs')(fs, 'mocha');
+
 describe('compake', function() {
   describe('Compake', function() {
+    it('should read from user config from default file', function(testDone) {
+      console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
+    });
+
     it('should add license from local file', function(testDone) {
       console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
     });
