@@ -10,6 +10,7 @@
     "generator"
   ],
   "dependencies": {
+    "visionmedia/configurable.js": "f87ca5f"
   },
   "development": {
     "codeactual/sinon-doublist-fs": "0.1.1"
