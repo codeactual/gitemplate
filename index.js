@@ -44,7 +44,15 @@ Gitemplate.prototype.init = function() {
 /**
  * @param {string} src Any valid `git clone` source.
  * @param {string} dst Local clone destination.
+ * @return {object} shelljs exec() result.
  */
 Gitemplate.prototype.cloneRepo = function(src, dst) {
   return exec(sprintf('git clone %s %s', src, dst), defShellOpt);
+};
+
+/**
+ * @param {string} dst Local clone destination.
+ */
+Gitemplate.prototype.rmGitDir = function(dst) {
+  shelljs.rm('-rf', dst + '/.git');
 };

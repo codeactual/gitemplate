@@ -21,13 +21,16 @@ function abort(msg, code) {
   process.exit(typeof code === 'undefined' ? 1 : code);
 }
 
+function abortOnErrorResult(res) {
+  if (res.code !== 0) { abort(res.output, res.code); }
+}
+
 var requiredParams = ['name', 'src', 'dst'];
 
 requiredParams.forEach(function(param) {
   if (!cli[param]) { abort('--' + param + ' required'); }
 });
 
-var res = gt.cloneRepo(cli.src, cli.dst);
-if (res.code !== 0) { abort(res.output, res.code); return; }
-
+abortOnErrorResult(gt.cloneRepo(cli.src, cli.dst));
+gt.rmGitDir(cli.dst)
 
