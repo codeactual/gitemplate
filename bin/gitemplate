@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+var cli = require('commander');
+var Gitemplate = require(__dirname + '/../dist/gitemplate').Gitemplate;
+
+cli
+  .option('-n, --name <component>', '', String)
+  .parse(process.argv);
+
+
+var gitemplate = new Gitemplate();
+gitemplate.set('name', cli.name);
+
+console.log('input name:', cli.name);
+console.log('setting name:', gitemplate.get('name'));

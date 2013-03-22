@@ -9,29 +9,26 @@
 'use strict';
 
 module.exports = {
-  Compake: Compake,
+  Gitemplate: Gitemplate,
   require: require
 };
 
 var configurable = require('configurable.js');
 
-function Compake(fs) {
+function Gitemplate(fs) {
   this.settings = {
     fs: fs,
-    name: '',
-
-    // Match .compake.js options.
-    license: ''
+    name: ''
   };
 }
 
-configurable(Compake.prototype);
+configurable(Gitemplate.prototype);
 
-Compake.USER_CONFIG_PATH = process.env.HOME + '/.compake.js';
+Gitemplate.USER_CONFIG_PATH = process.env.HOME + '/.gitemplate.js';
 
-Compake.prototype.readUserConfig = function(path) {
+Gitemplate.prototype.readUserConfig = function(path) {
   var self = this;
-  var config = require(Compake.USER_CONFIG_PATH);
+  var config = require(Gitemplate.USER_CONFIG_PATH);
   Object.keys(config).forEach(function(key) {
     self.set(key, config[key]);
   });

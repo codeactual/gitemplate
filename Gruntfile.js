@@ -36,16 +36,16 @@ module.exports = function(grunt) {
           beautify: true
         },
         files: {
-          'dist/compake.js': 'dist/compake.js'
+          'dist/gitemplate.js': 'dist/gitemplate.js'
         }
       }
     },
     shell: {
       build: {
-        command: 'component install --dev && component build --standalone compake --name build --dev'
+        command: 'component install --dev && component build --standalone gitemplate --name build --dev'
       },
       dist: {
-        command: 'component build --standalone compake --name compake --out dist'
+        command: 'component build --standalone gitemplate --name gitemplate --out dist'
       }
     }
   });

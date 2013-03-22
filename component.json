@@ -1,6 +1,6 @@
 {
-  "name": "compake",
-  "repo": "codeactual/compake",
+  "name": "gitemplate",
+  "repo": "codeactual/gitemplate",
   "description": "Make a component from templates",
   "version": "0.1.0",
   "keywords": [

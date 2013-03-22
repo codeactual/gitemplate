@@ -5,14 +5,14 @@ var should = chai.should();
 chai.Assertion.includeStack = true;
 
 var fs = require('fs');
-var compake = require('./build/build');
-var Compake = compake.Compake;
+var gitemplate = require('./build/build');
+var Gitemplate = gitemplate.Gitemplate;
 
-compake.require('sinon-doublist')(sinon, 'mocha');
-compake.require('sinon-doublist-fs')(fs, 'mocha');
+gitemplate.require('sinon-doublist')(sinon, 'mocha');
+gitemplate.require('sinon-doublist-fs')(fs, 'mocha');
 
-describe('compake', function() {
-  describe('Compake', function() {
+describe('gitemplate', function() {
+  describe('Gitemplate', function() {
     it('should read from user config from default file', function(testDone) {
       console.log('\x1B[33mINCOMPLETE'); testDone(); // TODO
     });

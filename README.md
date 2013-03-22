@@ -1,8 +1,8 @@
-# compake
+# gitemplate
 
 Make a component from templates
 
-[![Build Status](https://travis-ci.org/codeactual/compake.png)](https://travis-ci.org/codeactual/compake)
+[![Build Status](https://travis-ci.org/codeactual/gitemplate.png)](https://travis-ci.org/codeactual/gitemplate)
 
 ## Minimal Scaffolding
 
@@ -15,7 +15,7 @@ Make a component from templates
 
 Install to `components/`:
 
-    $ component install codeactual/compake
+    $ component install codeactual/gitemplate
 
 Build new standalone file:
 
