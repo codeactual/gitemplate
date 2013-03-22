@@ -13,6 +13,7 @@ cli
 var gt = new Gitemplate();
 gt
   .set('name', cli.name)
+  .set('require', require)
   .set('fs', require('fs'))
   .set('util', require('util'))
   .set('shelljs', require('shelljs'))
@@ -29,6 +30,7 @@ requiredParams.forEach(function(param) {
   if (!cli[param]) { abort('--' + param + ' required'); }
 });
 
-gt.cloneRepo(cli.src, cli.dst, function(code, output) {
-  if (code !== 0) { abort(output, code); return; }
-});
+var res = gt.cloneRepo(cli.src, cli.dst);
+if (res.code !== 0) { abort(res.output, res.code); return; }
+
+
