@@ -13,6 +13,8 @@ cli
 var gt = new Gitemplate();
 gt
   .set('name', cli.name)
+  .set('src', cli.src)
+  .set('dst', cli.dst)
   .set('nativeRequire', require)
   .init();
 
@@ -31,6 +33,7 @@ requiredParams.forEach(function(param) {
   if (!cli[param]) { abort('--' + param + ' required'); }
 });
 
-abortOnErrorResult(gt.cloneRepo(cli.src, cli.dst));
-gt.rmGitDir(cli.dst);
+abortOnErrorResult(gt.cloneRepo());
+gt.rmGitDir();
+abortOnErrorResult(gt.expandMacros());
 

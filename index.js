@@ -54,5 +54,13 @@ Gitemplate.prototype.rmGitDir = function() {
   shelljs.rm('-r', this.get('dst') + '/.git');
 };
 
-Gitemplate.prototype.expandMacros = function(dst) {
+Gitemplate.prototype.expandMacros = function() {
+  return shelljs.exec(
+    sprintf(
+      'perl -p -i -e "s/{{gitemplate.name}}/%s/g" %s/**/*',
+      this.get('name'),
+      this.get('dst')
+    ),
+    defShellOpt
+  );
 };
