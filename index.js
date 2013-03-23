@@ -69,7 +69,7 @@ Gitemplate.prototype.replaceContentVars = function() {
   if (res.code !== 0) { return res; }
 
   res = shelljs.exec(
-    sprintf(cmdHead + ESC_TMPL_VAR('year') + cmdFoot, dst, (new Date()).getFullYear()),
+    sprintf(cmdHead + ESC_TMPL_VAR('year') + cmdFoot, dst, (new Date()).getUTCFullYear()),
     defShellOpt
   );
   if (res.code !== 0) { return res; }

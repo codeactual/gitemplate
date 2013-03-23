@@ -85,7 +85,7 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\\.year\\}\\}/1969' + this.findCmdFoot
+        this.findCmdHead + '\\{\\{gitemplate\\.year\\}\\}/1970' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
