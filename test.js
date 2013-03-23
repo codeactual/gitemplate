@@ -23,6 +23,9 @@ describe('gitemplate', function() {
     this.dst = '/dst';
     this.repo = 'user/proj';
     this.resOK = {code: 0};
+    this.findCmdHead = "find /dst -type f -exec perl -p -i -e 's/";
+    this.findCmdFoot = "/g' {} \\;";
+    this.findRepoCmd = this.findCmdHead + '\\{\\{gitemplate\.repo\\}\\}/user\\/proj' + this.findCmdFoot
   });
 
   describe('Gitemplate', function() {
@@ -53,22 +56,25 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
-        "find /dst -type f " +
-        "-exec perl -p -i -e " +
-        "'s/\\{\\{gitemplate\.name\\}\\}/mycomponent/g' {} \\;"
+        this.findCmdHead + '\\{\\{gitemplate\.name\\}\\}/mycomponent' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
 
-    it('should expand content "name" macro', function() {
+    it('should ignore content "repo" macro if value missing', function() {
+      var stub = this.stub(shelljs, 'exec');
+      stub.returns(this.resOK);
+      this.gt.set('repo', null);
+      var res = this.gt.expandContentMacros();
+      stub.should.not.have.been.calledWith(this.findRepoCmd);
+      res.should.deep.equal(this.resOK);
+    });
+
+    it('should expand content "repo" macro if value exists', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
-      stub.should.have.been.calledWith(
-        "find /dst -type f " +
-        "-exec perl -p -i -e " +
-        "'s/\\{\\{gitemplate\.repo\\}\\}/user\\/proj/g' {} \\;"
-      );
+      stub.should.have.been.calledWith(this.findRepoCmd);
       res.should.deep.equal(this.resOK);
     });
 
