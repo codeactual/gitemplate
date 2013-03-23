@@ -9,6 +9,7 @@ Git cloning with template variables.
 
 ## Example
 
+    $ gitemplate --help
     $ gitemplate --name my-new-project \
                  --json '{"customVar1":"val1","customVar2":"val2"}' \
                  --src git@github.com:me/my-old-template.git \
@@ -56,6 +57,15 @@ Install to `components/`:
 Build new standalone file:
 
     $ grunt dist
+
+## CLI
+
+    -h, --help
+    -n, --name <new component>
+    -s, --src <source repo>
+    -d, --dst <destination dir>
+    -r, --repo <user/project>
+    -j, --json <custom template variables>
 
 ## API
 

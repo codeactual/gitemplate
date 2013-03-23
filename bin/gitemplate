@@ -15,7 +15,7 @@ cli
   .option('-s, --src <source repo>', '', String)
   .option('-d, --dst <destination dir>', '', String)
   .option('-r, --repo <user/project>', '', String)
-  .option('-j, --json <custom macro JSON>', '', String)
+  .option('-j, --json <custom template variables>', '', String)
   .parse(process.argv);
 
 var gt = new Gitemplate();
