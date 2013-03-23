@@ -22,6 +22,7 @@ describe('gitemplate', function() {
     this.src = '/src';
     this.dst = '/dst';
     this.repo = 'user/proj';
+    this.resOK = {code: 0};
   });
 
   describe('Gitemplate', function() {
@@ -49,12 +50,26 @@ describe('gitemplate', function() {
 
     it('should expand content "name" macro', function() {
       var stub = this.stub(shelljs, 'exec');
-      this.gt.expandContentMacros();
+      stub.returns(this.resOK);
+      var res = this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
         "find /dst -type f " +
         "-exec perl -p -i -e " +
         "'s/\\{\\{gitemplate\.name\\}\\}/mycomponent/g' {} \\;"
       );
+      res.should.deep.equal(this.resOK);
+    });
+
+    it('should expand content "name" macro', function() {
+      var stub = this.stub(shelljs, 'exec');
+      stub.returns(this.resOK);
+      var res = this.gt.expandContentMacros();
+      stub.should.have.been.calledWith(
+        "find /dst -type f " +
+        "-exec perl -p -i -e " +
+        "'s/\\{\\{gitemplate\.repo\\}\\}/user\\/proj/g' {} \\;"
+      );
+      res.should.deep.equal(this.resOK);
     });
 
     it('should expand file "name" macro', function() {
@@ -67,16 +82,21 @@ describe('gitemplate', function() {
     });
 
     it('should init repo', function() {
-      var stub = this.stub(shelljs, 'exec');
-      this.gt.initRepo();
-      stub.should.have.been.calledWith('git init');
+      var stub = this.stubMany(shelljs, ['cd', 'exec']);
+      stub.exec.returns(this.resOK);
+      var res = this.gt.initRepo();
+      stub.cd.should.have.been.calledWithExactly(this.dst);
+      stub.exec.should.have.been.calledWith('git init');
+      res.should.deep.equal(this.resOK);
     });
 
     it('should set repo GitHub remote origin', function() {
       var stub = this.stubMany(shelljs, ['cd', 'exec']);
-      this.gt.setGithubOrigin();
+      stub.exec.returns(this.resOK);
+      var res = this.gt.setGithubOrigin();
       stub.cd.should.have.been.calledWithExactly(this.dst);
       stub.exec.should.have.been.calledWith('git remote add origin git@github.com:user/proj.git');
+      res.should.deep.equal(this.resOK);
     });
   });
 });

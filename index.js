@@ -69,16 +69,25 @@ Gitemplate.prototype.rmGitDir = function() {
  * Expand macros found in repo file content.
  */
 Gitemplate.prototype.expandContentMacros = function() {
-  return shelljs.exec(
-    sprintf(
-      "find %s -type f -exec perl -p -i -e 's/\\{\\{" +
-        MACRO.name +
-        "\\}\\}/%s/g' {} \\;",
-      this.get('dst'),
-      this.get('name')
-    ),
+  var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
+  var cmdFoot = "\\}\\}/%s/g' {} \\;";
+
+  var res = shelljs.exec(
+    sprintf(cmdHead + MACRO.name + cmdFoot, this.get('dst'), this.get('name')),
     defShellOpt
   );
+  if (res.code !== 0) { return res; }
+
+  var repo = this.get('repo');
+  if (repo) {
+    res = shelljs.exec(
+      sprintf(cmdHead + MACRO.repo + cmdFoot, this.get('dst'), repo.replace('/', '\\/')),
+      defShellOpt
+    );
+    if (res.code !== 0) { return res; }
+  }
+
+  return res;
 };
 
 /**
