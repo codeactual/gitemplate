@@ -15,10 +15,7 @@ module.exports = {
 
 var configurable = require('configurable.js');
 var sprintf;
-var fs;
 var shelljs;
-var exec;
-var util;
 var defShellOpt = {silent: true};
 
 function Gitemplate() {
@@ -36,10 +33,8 @@ configurable(Gitemplate.prototype);
  */
 Gitemplate.prototype.init = function() {
   var nativeRequire = this.get('nativeRequire');
-  fs = nativeRequire('fs');
   shelljs = nativeRequire('shelljs');
-  util = nativeRequire('util');
-  sprintf = util.format;
+  sprintf = nativeRequire('util').format;
 };
 
 /**
