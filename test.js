@@ -53,47 +53,47 @@ describe('gitemplate', function() {
       stub.should.have.been.calledWithExactly('-rf', '/dst/.git');
     });
 
-    it('should expand content "name" macro', function() {
+    it('should replace content "name" var', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
-      var res = this.gt.expandContentMacros();
+      var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         this.findCmdHead + '\\{\\{gitemplate\\.name\\}\\}/myproj' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
 
-    it('should ignore content "repo" macro if value missing', function() {
+    it('should ignore content "repo" var if value missing', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
       this.gt.set('repo', null);
-      var res = this.gt.expandContentMacros();
+      var res = this.gt.replaceContentVars();
       stub.should.not.have.been.calledWith(this.findRepoCmd);
       res.should.deep.equal(this.resOK);
     });
 
-    it('should expand content "repo" macro if value exists', function() {
+    it('should replace content "repo" var if value exists', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
-      var res = this.gt.expandContentMacros();
+      var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(this.findRepoCmd);
       res.should.deep.equal(this.resOK);
     });
 
-    it('should expand content "year" macro', function() {
+    it('should replace content "year" var', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
-      var res = this.gt.expandContentMacros();
+      var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         this.findCmdHead + '\\{\\{gitemplate\\.year\\}\\}/1969' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
 
-    it('should expand custom content macros', function() {
+    it('should replace custom content vars', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
-      var res = this.gt.expandContentMacros();
+      var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         this.findCmdHead + '\\{\\{gitemplate\\.m1\\}\\}/v1' + this.findCmdFoot
       );
@@ -103,22 +103,22 @@ describe('gitemplate', function() {
       res.should.deep.equal(this.resOK);
     });
 
-    it('should expand file "name" macro', function() {
+    it('should replace file "name" var', function() {
       this.stubFile('/dst').readdir([
         this.stubFile('/dst/gitemplate.name.js')
       ]).make();
       var stub = this.stub(shelljs, 'mv');
-      this.gt.expandNameMacros();
+      this.gt.replaceNameVars();
       stub.should.have.been.calledWithExactly('/dst/gitemplate.name.js', '/dst/myproj.js');
     });
 
-    it('should expand custom name macros', function() {
+    it('should replace custom name vars', function() {
       this.stubFile('/dst').readdir([
         this.stubFile('/dst/gitemplate.m1.js'),
         this.stubFile('/dst/gitemplate.m2.js')
       ]).make();
       var stub = this.stub(shelljs, 'mv');
-      var res = this.gt.expandNameMacros();
+      var res = this.gt.replaceNameVars();
       stub.should.have.been.calledWithExactly('/dst/gitemplate.m1.js', '/dst/v1.js');
       stub.should.have.been.calledWithExactly('/dst/gitemplate.m2.js', '/dst/v2.js');
     });

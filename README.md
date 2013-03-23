@@ -1,8 +1,8 @@
 # gitemplate
 
-Create a new Git repo from a templates in an existing repo.
+Git repo templating CLI.
 
-* Built-in/custom macros for both file names and content.
+* Replace vars in file names and content.
 * Optional GitHub repo init and remote origin setup.
 
 [![Build Status](https://travis-ci.org/codeactual/gitemplate.png)](https://travis-ci.org/codeactual/gitemplate)
@@ -10,14 +10,14 @@ Create a new Git repo from a templates in an existing repo.
 ## Example
 
     $ gitemplate --name my-new-project \
-                 --json '{"customMacro1":"val1","customMacro2":"val2"}' \
+                 --json '{"customVar1":"val1","customVar2":"val2"}' \
                  --src git@github.com:me/my-old-template.git \
                  --dst ~/dev/my-new-project \
                  --repo me/my-new-project
     $ ls -a
     $ .  ..  .git  .gitignore  index.js  package.json  README.md  test.js val1.js val2.js
 
-## Built-in macros
+## Built-in vars
 
 To use in filenames, omit the `{{` and `}}` braces.
 
@@ -27,11 +27,11 @@ To use in filenames, omit the `{{` and `}}` braces.
 
 ### `{{gitemplate.year}}`
 
-> Full year in local time. (Only expanded in file content.)
+> Full year in local time. (Only replaceed in file content.)
 
-## Custom macros
+## Custom vars
 
-> Will expand in both file names and content.
+> Will also replace in file names and content.
 
 ### Place in a file
 
@@ -41,7 +41,7 @@ To use in filenames, omit the `{{` and `}}` braces.
 
     /path/to/gitemplate.engineVer.js
 
-### Then expand
+### Then replace
 
     --json '{"engineVer":"0.10.1"}'
 
@@ -81,13 +81,13 @@ this.gt.cloneRepo();
 
 > Prep for new init and remote origin.
 
-### #expandContentMacros()
+### #replaceContentVars()
 
-> Expand macros found in repo file content.
+> Replace vars found in repo file content.
 
-### #expandNameMacros()
+### #replaceNameVars()
 
-> Expand macros found in repo file names.
+> Replace vars found in repo file names.
 
 ### #init()
 

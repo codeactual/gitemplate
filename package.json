@@ -1,7 +1,7 @@
 {
   "name": "gitemplate",
   "version": "0.1.0",
-  "description": "Create a new Git repo from a templates in an existing repo",
+  "description": "Git repo templating CLI",
   "main": "index.js",
   "scripts": {
     "test": "grunt build && mocha --reporter spec test.js"

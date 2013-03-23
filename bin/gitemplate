@@ -38,8 +38,8 @@ requiredParams.forEach(function(param) {
 
 abortOnErrorResult(gt.cloneRepo());
 gt.rmGitDir();
-abortOnErrorResult(gt.expandContentMacros());
-gt.expandNameMacros();
+abortOnErrorResult(gt.replaceContentVars());
+gt.replaceNameVars();
 
 if (cli.repo) {
   abortOnErrorResult(gt.initRepo());

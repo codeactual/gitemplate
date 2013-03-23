@@ -55,21 +55,21 @@ Gitemplate.prototype.rmGitDir = function() {
 };
 
 /**
- * Expand macros found in repo file content.
+ * Replace macros found in repo file content.
  */
-Gitemplate.prototype.expandContentMacros = function() {
+Gitemplate.prototype.replaceContentVars = function() {
   var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
   var cmdFoot = "\\}\\}/%s/g' {} \\;";
   var dst = this.get('dst');
 
   var res = shelljs.exec(
-    sprintf(cmdHead + ESC_MACRO('name') + cmdFoot, dst, this.get('name')),
+    sprintf(cmdHead + ESC_TMPL_VAR('name') + cmdFoot, dst, this.get('name')),
     defShellOpt
   );
   if (res.code !== 0) { return res; }
 
   res = shelljs.exec(
-    sprintf(cmdHead + ESC_MACRO('year') + cmdFoot, dst, (new Date()).getFullYear()),
+    sprintf(cmdHead + ESC_TMPL_VAR('year') + cmdFoot, dst, (new Date()).getFullYear()),
     defShellOpt
   );
   if (res.code !== 0) { return res; }
@@ -77,7 +77,7 @@ Gitemplate.prototype.expandContentMacros = function() {
   var repo = this.get('repo');
   if (repo) {
     res = shelljs.exec(
-      sprintf(cmdHead + ESC_MACRO('repo') + cmdFoot, dst, repo.replace('/', '\\/')),
+      sprintf(cmdHead + ESC_TMPL_VAR('repo') + cmdFoot, dst, repo.replace('/', '\\/')),
       defShellOpt
     );
     if (res.code !== 0) { return res; }
@@ -86,7 +86,7 @@ Gitemplate.prototype.expandContentMacros = function() {
   var json = this.get('json');
   Object.keys(json).forEach(function(key) {
     res = shelljs.exec(
-      sprintf(cmdHead + ESC_MACRO(key) + cmdFoot, dst, json[key]),
+      sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, json[key]),
       defShellOpt
     );
     if (res.code !== 0) { return res; }
@@ -96,18 +96,18 @@ Gitemplate.prototype.expandContentMacros = function() {
 };
 
 /**
- * Expand macros found in repo file names.
+ * Replace macros found in repo file names.
  */
-Gitemplate.prototype.expandNameMacros = function() {
+Gitemplate.prototype.replaceNameVars = function() {
   var name = this.get('name');
   var dst = this.get('dst');
 
-  var nameMacro = MACRO('name');
+  var nameVar = TMPL_VAR('name');
   var targets = shelljs.find(dst).filter(function(file) {
-    return file.match(nameMacro);
+    return file.match(nameVar);
   });
   targets.forEach(function(target) {
-    shelljs.mv(target, target.replace(nameMacro, name));
+    shelljs.mv(target, target.replace(nameVar, name));
   });
 
   var json = this.get('json');
@@ -116,7 +116,7 @@ Gitemplate.prototype.expandNameMacros = function() {
       return file.match(key);
     });
     targets.forEach(function(target) {
-      shelljs.mv(target, target.replace(MACRO(key), json[key]));
+      shelljs.mv(target, target.replace(TMPL_VAR(key), json[key]));
     });
   });
 };
@@ -140,9 +140,9 @@ Gitemplate.prototype.setGithubOrigin = function() {
   );
 };
 
-function MACRO(key) {
+function TMPL_VAR(key) {
   return 'gitemplate.' + key;
 }
-function ESC_MACRO(key) {
-  return MACRO(key).replace(/\./, '\\.');
+function ESC_TMPL_VAR(key) {
+  return TMPL_VAR(key).replace(/\./, '\\.');
 }
