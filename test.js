@@ -18,7 +18,7 @@ requireComponent('sinon-doublist-fs')(fs, 'mocha');
 
 describe('gitemplate', function() {
   before(function() {
-    this.name = 'mycomponent';
+    this.name = 'myproj';
     this.src = '/src';
     this.dst = '/dst';
     this.json = {m1: 'v1', m2: 'v2'};
@@ -58,7 +58,7 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\.name\\}\\}/mycomponent' + this.findCmdFoot
+        this.findCmdHead + '\\{\\{gitemplate\.name\\}\\}/myproj' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
@@ -109,7 +109,7 @@ describe('gitemplate', function() {
       ]).make();
       var stub = this.stub(shelljs, 'mv');
       this.gt.expandNameMacros();
-      stub.should.have.been.calledWithExactly('/dst/gitemplate.name', '/dst/mycomponent');
+      stub.should.have.been.calledWithExactly('/dst/gitemplate.name', '/dst/myproj');
     });
 
     it('should init repo', function() {
