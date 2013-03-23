@@ -24,6 +24,7 @@ var defShellOpt = {silent: true};
 function Gitemplate() {
   this.settings = {
     name: null,
+    json: {},
     repo: null
   };
 }
@@ -86,6 +87,15 @@ Gitemplate.prototype.expandContentMacros = function() {
     );
     if (res.code !== 0) { return res; }
   }
+
+  var json = this.get('json');
+  Object.keys(json).forEach(function(key) {
+    res = shelljs.exec(
+      sprintf(cmdHead + MACRO(key) + cmdFoot, dst, json[key]),
+      defShellOpt
+    );
+    if (res.code !== 0) { return res; }
+  });
 
   return res;
 };

@@ -21,6 +21,7 @@ describe('gitemplate', function() {
     this.name = 'mycomponent';
     this.src = '/src';
     this.dst = '/dst';
+    this.json = {m1: 'v1', m2: 'v2'};
     this.repo = 'user/proj';
     this.resOK = {code: 0};
     this.findCmdHead = "find /dst -type f -exec perl -p -i -e 's/";
@@ -35,6 +36,7 @@ describe('gitemplate', function() {
         .set('name', this.name)
         .set('src', this.src)
         .set('dst', this.dst)
+        .set('json', this.json)
         .set('repo', this.repo)
         .set('nativeRequire', require).init();
     });
@@ -78,12 +80,25 @@ describe('gitemplate', function() {
       res.should.deep.equal(this.resOK);
     });
 
-    it('should expand content "year" macro if value exists', function() {
+    it('should expand content "year" macro', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
         this.findCmdHead + '\\{\\{gitemplate\.year\\}\\}/1969' + this.findCmdFoot
+      );
+      res.should.deep.equal(this.resOK);
+    });
+
+    it('should expand content custom macros', function() {
+      var stub = this.stub(shelljs, 'exec');
+      stub.returns(this.resOK);
+      var res = this.gt.expandContentMacros();
+      stub.should.have.been.calledWith(
+        this.findCmdHead + '\\{\\{gitemplate\.m1\\}\\}/v1' + this.findCmdFoot
+      );
+      stub.should.have.been.calledWith(
+        this.findCmdHead + '\\{\\{gitemplate\.m2\\}\\}/v2' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });

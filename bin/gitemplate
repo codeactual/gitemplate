@@ -9,6 +9,7 @@ cli
   .option('-s, --src <source repo>', '', String)
   .option('-d, --dst <destination dir>', '', String)
   .option('-r, --repo <user/project>', '', String)
+  .option('-j, --json <custom macro JSON>', '', String)
   .parse(process.argv);
 
 var gt = new Gitemplate();
@@ -16,6 +17,7 @@ gt
   .set('name', cli.name)
   .set('src', cli.src)
   .set('dst', cli.dst)
+  .set('json', JSON.parse(cli.json))
   .set('repo', cli.repo)
   .set('nativeRequire', require)
   .init();
