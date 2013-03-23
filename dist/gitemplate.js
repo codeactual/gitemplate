@@ -129,6 +129,12 @@
         var defShellOpt = {
             silent: true
         };
+        var MACRO_NS = "gitemplate.";
+        var MACRO_KEYS = [ "name" ];
+        var MACRO = {};
+        MACRO_KEYS.forEach(function(key) {
+            MACRO[key] = MACRO_NS + key;
+        });
         function Gitemplate() {
             this.settings = {
                 name: null
@@ -148,8 +154,18 @@
         Gitemplate.prototype.rmGitDir = function() {
             shelljs.rm("-rf", this.get("dst") + "/.git");
         };
-        Gitemplate.prototype.expandMacros = function() {
+        Gitemplate.prototype.expandContentMacros = function() {
             return shelljs.exec(sprintf("find %s -type f -exec perl -p -i -e 's/\\{\\{gitemplate\\.name\\}\\}/%s/g' {} \\;", this.get("dst"), this.get("name")), defShellOpt);
+        };
+        Gitemplate.prototype.expandNameMacros = function() {
+            var name = this.get("name");
+            var targets = shelljs.find(this.get("dst")).filter(function(file) {
+                return file.match(MACRO.name);
+            });
+            for (var t = 0, target = ""; t < targets.length; t++) {
+                target = targets[t];
+                shelljs.mv(target, target.replace(MACRO.name, name));
+            }
         };
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");

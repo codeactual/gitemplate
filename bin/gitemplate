@@ -35,5 +35,6 @@ requiredParams.forEach(function(param) {
 
 abortOnErrorResult(gt.cloneRepo());
 gt.rmGitDir();
-abortOnErrorResult(gt.expandMacros());
+abortOnErrorResult(gt.expandContentMacros());
+gt.expandNameMacros();
 

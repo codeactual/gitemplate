@@ -45,12 +45,20 @@ describe('gitemplate', function() {
       stub.should.have.been.calledWithExactly('-rf', '/dst/.git');
     });
 
-    it('should expand name macros', function() {
+    it('should expand content "name" macro', function() {
       var stub = this.stub(shelljs, 'exec');
-      this.gt.expandMacros();
+      this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
-        "find /dst -type f -exec perl -p -i -e 's/\\{\\{gitemplate\\.name\\}\\}/mycomponent/g' {} \\;"
+        "find /dst -type f -exec perl -p -i -e 's/\\{\\{gitemplate\.name\\}\\}/mycomponent/g' {} \\;"
       );
+    });
+
+    it('should expand file "name" macro', function() {
+      this.stubFile('/dst').readdir(['gitemplate.name']).make();
+      this.stubFile('/dst/gitemplate.name').make();
+      var stub = this.stub(shelljs, 'mv');
+      this.gt.expandNameMacros();
+      stub.should.have.been.calledWithExactly('/dst/gitemplate.name', '/dst/mycomponent');
     });
   });
 });
