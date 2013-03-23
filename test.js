@@ -54,8 +54,9 @@ describe('gitemplate', function() {
     });
 
     it('should expand file "name" macro', function() {
-      this.stubFile('/dst').readdir(['gitemplate.name']).make();
-      this.stubFile('/dst/gitemplate.name').make();
+      this.stubFile('/dst').readdir([
+        this.stubFile('/dst/gitemplate.name')
+      ]).make();
       var stub = this.stub(shelljs, 'mv');
       this.gt.expandNameMacros();
       stub.should.have.been.calledWithExactly('/dst/gitemplate.name', '/dst/mycomponent');
