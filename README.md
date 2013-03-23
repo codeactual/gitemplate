@@ -1,8 +1,8 @@
 # gitemplate
 
-Git repo templating CLI.
+Git cloning with template variables.
 
-* Replace vars in file names and content.
+* Replace variables in file names and content.
 * Optional GitHub repo init and remote origin setup.
 
 [![Build Status](https://travis-ci.org/codeactual/gitemplate.png)](https://travis-ci.org/codeactual/gitemplate)
@@ -17,7 +17,7 @@ Git repo templating CLI.
     $ ls -a
     $ .  ..  .git  .gitignore  index.js  package.json  README.md  test.js val1.js val2.js
 
-## Built-in vars
+## Built-in variables
 
 To use in filenames, omit the `{{` and `}}` braces.
 

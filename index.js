@@ -1,5 +1,5 @@
 /**
- * Create a new Git repo from a templates in an existing repo.
+ * Git cloning with template variables.
  *
  * Licensed under MIT.
  * Copyright (c) 2013 David Smith <https://github.com/codeactual/>

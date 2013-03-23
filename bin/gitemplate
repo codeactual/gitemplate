@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+/**
+ * Git cloning with template variables.
+ *
+ * Licensed under MIT.
+ * Copyright (c) 2013 David Smith <https://github.com/codeactual/>
+ */
 
 var util = require('util');
 var cli = require('commander');

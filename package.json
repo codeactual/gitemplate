@@ -1,7 +1,7 @@
 {
   "name": "gitemplate",
   "version": "0.1.0",
-  "description": "Git repo templating CLI",
+  "description": "Git cloning with template variables",
   "main": "index.js",
   "scripts": {
     "test": "grunt build && mocha --reporter spec test.js"
