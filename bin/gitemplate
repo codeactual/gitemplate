@@ -8,6 +8,7 @@ cli
   .option('-n, --name <new component>', '', String)
   .option('-s, --src <source repo>', '', String)
   .option('-d, --dst <destination dir>', '', String)
+  .option('-r, --repo <user/project>', '', String)
   .parse(process.argv);
 
 var gt = new Gitemplate();
@@ -15,6 +16,7 @@ gt
   .set('name', cli.name)
   .set('src', cli.src)
   .set('dst', cli.dst)
+  .set('repo', cli.repo)
   .set('nativeRequire', require)
   .init();
 
@@ -28,7 +30,6 @@ function abortOnErrorResult(res) {
 }
 
 var requiredParams = ['name', 'src', 'dst'];
-
 requiredParams.forEach(function(param) {
   if (!cli[param]) { abort('--' + param + ' required'); }
 });
@@ -38,3 +39,7 @@ gt.rmGitDir();
 abortOnErrorResult(gt.expandContentMacros());
 gt.expandNameMacros();
 
+if (cli.repo) {
+  abortOnErrorResult(gt.initRepo());
+  abortOnErrorResult(gt.setGithubOrigin());
+}

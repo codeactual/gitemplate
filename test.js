@@ -21,6 +21,7 @@ describe('gitemplate', function() {
     this.name = 'mycomponent';
     this.src = '/src';
     this.dst = '/dst';
+    this.repo = 'user/proj';
   });
 
   describe('Gitemplate', function() {
@@ -30,6 +31,7 @@ describe('gitemplate', function() {
         .set('name', this.name)
         .set('src', this.src)
         .set('dst', this.dst)
+        .set('repo', this.repo)
         .set('nativeRequire', require).init();
     });
 
@@ -49,7 +51,9 @@ describe('gitemplate', function() {
       var stub = this.stub(shelljs, 'exec');
       this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
-        "find /dst -type f -exec perl -p -i -e 's/\\{\\{gitemplate\.name\\}\\}/mycomponent/g' {} \\;"
+        "find /dst -type f " +
+        "-exec perl -p -i -e " +
+        "'s/\\{\\{gitemplate\.name\\}\\}/mycomponent/g' {} \\;"
       );
     });
 
@@ -60,6 +64,19 @@ describe('gitemplate', function() {
       var stub = this.stub(shelljs, 'mv');
       this.gt.expandNameMacros();
       stub.should.have.been.calledWithExactly('/dst/gitemplate.name', '/dst/mycomponent');
+    });
+
+    it('should init repo', function() {
+      var stub = this.stub(shelljs, 'exec');
+      this.gt.initRepo();
+      stub.should.have.been.calledWith('git init');
+    });
+
+    it('should set repo GitHub remote origin', function() {
+      var stub = this.stubMany(shelljs, ['cd', 'exec']);
+      this.gt.setGithubOrigin();
+      stub.cd.should.have.been.calledWithExactly(this.dst);
+      stub.exec.should.have.been.calledWith('git remote add origin git@github.com:user/proj.git');
     });
   });
 });

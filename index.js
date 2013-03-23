@@ -22,7 +22,7 @@ var util;
 var defShellOpt = {silent: true};
 
 var MACRO_NS = 'gitemplate.';
-var MACRO_KEYS = ['name'];
+var MACRO_KEYS = ['name', 'repo'];
 var MACRO = {};
 MACRO_KEYS.forEach(function(key) {
   MACRO[key] = MACRO_NS + key;
@@ -30,7 +30,8 @@ MACRO_KEYS.forEach(function(key) {
 
 function Gitemplate() {
   this.settings = {
-    name: null
+    name: null,
+    repo: null
   };
 }
 
@@ -57,10 +58,16 @@ Gitemplate.prototype.cloneRepo = function() {
   );
 };
 
+/**
+ * Prep for new init and remote origin.
+ */
 Gitemplate.prototype.rmGitDir = function() {
   shelljs.rm('-rf', this.get('dst') + '/.git');
 };
 
+/**
+ * Expand macros found in repo file content.
+ */
 Gitemplate.prototype.expandContentMacros = function() {
   return shelljs.exec(
     sprintf(
@@ -74,6 +81,9 @@ Gitemplate.prototype.expandContentMacros = function() {
   );
 };
 
+/**
+ * Expand macros found in repo file names.
+ */
 Gitemplate.prototype.expandNameMacros = function() {
   var name = this.get('name');
   var targets = shelljs.find(this.get('dst')).filter(function(file) {
@@ -83,4 +93,23 @@ Gitemplate.prototype.expandNameMacros = function() {
     target = targets[t];
     shelljs.mv(target, target.replace(MACRO.name, name));
   }
+};
+
+/**
+ * @return {object} shelljs exec() result.
+ */
+Gitemplate.prototype.initRepo = function() {
+  shelljs.cd(this.get('dst'));
+  return shelljs.exec('git init', defShellOpt);
+};
+
+/**
+ * Set GitHub remote origin.
+ */
+Gitemplate.prototype.setGithubOrigin = function() {
+  shelljs.cd(this.get('dst'));
+  return shelljs.exec(
+    sprintf('git remote add origin git@github.com:%s.git', this.get('repo')),
+    defShellOpt
+  );
 };
