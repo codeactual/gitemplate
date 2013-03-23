@@ -90,7 +90,7 @@ describe('gitemplate', function() {
       res.should.deep.equal(this.resOK);
     });
 
-    it('should expand content custom macros', function() {
+    it('should expand custom content macros', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
@@ -105,11 +105,22 @@ describe('gitemplate', function() {
 
     it('should expand file "name" macro', function() {
       this.stubFile('/dst').readdir([
-        this.stubFile('/dst/gitemplate.name')
+        this.stubFile('/dst/gitemplate.name.js')
       ]).make();
       var stub = this.stub(shelljs, 'mv');
       this.gt.expandNameMacros();
-      stub.should.have.been.calledWithExactly('/dst/gitemplate.name', '/dst/myproj');
+      stub.should.have.been.calledWithExactly('/dst/gitemplate.name.js', '/dst/myproj.js');
+    });
+
+    it('should expand custom name macros', function() {
+      this.stubFile('/dst').readdir([
+        this.stubFile('/dst/gitemplate.m1.js'),
+        this.stubFile('/dst/gitemplate.m2.js')
+      ]).make();
+      var stub = this.stub(shelljs, 'mv');
+      var res = this.gt.expandNameMacros();
+      stub.should.have.been.calledWithExactly('/dst/gitemplate.m1.js', '/dst/v1.js');
+      stub.should.have.been.calledWithExactly('/dst/gitemplate.m2.js', '/dst/v2.js');
     });
 
     it('should init repo', function() {

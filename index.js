@@ -105,13 +105,25 @@ Gitemplate.prototype.expandContentMacros = function() {
  */
 Gitemplate.prototype.expandNameMacros = function() {
   var name = this.get('name');
-  var targets = shelljs.find(this.get('dst')).filter(function(file) {
-    return file.match(MACRO('name'));
+  var dst = this.get('dst');
+
+  var nameMacro = MACRO('name');
+  var targets = shelljs.find(dst).filter(function(file) {
+    return file.match(nameMacro);
   });
-  for (var t = 0, target = ''; t < targets.length; t++) {
-    target = targets[t];
-    shelljs.mv(target, target.replace(MACRO('name'), name));
-  }
+  targets.forEach(function(target) {
+    shelljs.mv(target, target.replace(nameMacro, name));
+  });
+
+  var json = this.get('json');
+  Object.keys(json).forEach(function(key) {
+    var targets = shelljs.find(dst).filter(function(file) {
+      return file.match(key);
+    });
+    targets.forEach(function(target) {
+      shelljs.mv(target, target.replace(MACRO(key), json[key]));
+    });
+  });
 };
 
 /**
