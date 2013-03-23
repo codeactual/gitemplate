@@ -184,14 +184,11 @@
                 shelljs.mv(target, target.replace(nameVar, name));
             });
             var json = this.get("json");
-            console.error("json", json);
             Object.keys(json).forEach(function(key) {
                 var targets = shelljs.find(dst).filter(function(file) {
                     return file.match(ESC_TMPL_VAR(key));
                 });
-                console.error("targets", targets);
                 targets.forEach(function(target) {
-                    console.error(target, target.replace(TMPL_VAR(key), json[key]));
                     shelljs.mv(target, target.replace(TMPL_VAR(key), json[key]));
                 });
             });
