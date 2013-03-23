@@ -27,7 +27,7 @@ To use in filenames, omit the `{{` and `}}` braces.
 
 ### `{{gitemplate.year}}`
 
-> Full year in local time.
+> Full year in local time. (Only expanded in file content.)
 
 ## Custom macros
 
