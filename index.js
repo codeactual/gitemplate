@@ -68,13 +68,13 @@ Gitemplate.prototype.expandContentMacros = function() {
   var dst = this.get('dst');
 
   var res = shelljs.exec(
-    sprintf(cmdHead + MACRO('name') + cmdFoot, dst, this.get('name')),
+    sprintf(cmdHead + ESC_MACRO('name') + cmdFoot, dst, this.get('name')),
     defShellOpt
   );
   if (res.code !== 0) { return res; }
 
   res = shelljs.exec(
-    sprintf(cmdHead + MACRO('year') + cmdFoot, dst, (new Date).getFullYear()),
+    sprintf(cmdHead + ESC_MACRO('year') + cmdFoot, dst, (new Date()).getFullYear()),
     defShellOpt
   );
   if (res.code !== 0) { return res; }
@@ -82,7 +82,7 @@ Gitemplate.prototype.expandContentMacros = function() {
   var repo = this.get('repo');
   if (repo) {
     res = shelljs.exec(
-      sprintf(cmdHead + MACRO('repo') + cmdFoot, dst, repo.replace('/', '\\/')),
+      sprintf(cmdHead + ESC_MACRO('repo') + cmdFoot, dst, repo.replace('/', '\\/')),
       defShellOpt
     );
     if (res.code !== 0) { return res; }
@@ -91,7 +91,7 @@ Gitemplate.prototype.expandContentMacros = function() {
   var json = this.get('json');
   Object.keys(json).forEach(function(key) {
     res = shelljs.exec(
-      sprintf(cmdHead + MACRO(key) + cmdFoot, dst, json[key]),
+      sprintf(cmdHead + ESC_MACRO(key) + cmdFoot, dst, json[key]),
       defShellOpt
     );
     if (res.code !== 0) { return res; }
@@ -135,4 +135,7 @@ Gitemplate.prototype.setGithubOrigin = function() {
 
 function MACRO(key) {
   return 'gitemplate.' + key;
+}
+function ESC_MACRO(key) {
+  return MACRO(key).replace(/\./, '\\.');
 }

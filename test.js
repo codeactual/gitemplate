@@ -26,7 +26,7 @@ describe('gitemplate', function() {
     this.resOK = {code: 0};
     this.findCmdHead = "find /dst -type f -exec perl -p -i -e 's/";
     this.findCmdFoot = "/g' {} \\;";
-    this.findRepoCmd = this.findCmdHead + '\\{\\{gitemplate\.repo\\}\\}/user\\/proj' + this.findCmdFoot
+    this.findRepoCmd = this.findCmdHead + '\\{\\{gitemplate\\.repo\\}\\}/user\\/proj' + this.findCmdFoot;
   });
 
   describe('Gitemplate', function() {
@@ -58,7 +58,7 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\.name\\}\\}/myproj' + this.findCmdFoot
+        this.findCmdHead + '\\{\\{gitemplate\\.name\\}\\}/myproj' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
@@ -85,7 +85,7 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\.year\\}\\}/1969' + this.findCmdFoot
+        this.findCmdHead + '\\{\\{gitemplate\\.year\\}\\}/1969' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
@@ -95,10 +95,10 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.expandContentMacros();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\.m1\\}\\}/v1' + this.findCmdFoot
+        this.findCmdHead + '\\{\\{gitemplate\\.m1\\}\\}/v1' + this.findCmdFoot
       );
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\.m2\\}\\}/v2' + this.findCmdFoot
+        this.findCmdHead + '\\{\\{gitemplate\\.m2\\}\\}/v2' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });

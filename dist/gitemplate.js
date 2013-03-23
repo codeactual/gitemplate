@@ -129,15 +129,10 @@
         var defShellOpt = {
             silent: true
         };
-        var MACRO_NS = "gitemplate.";
-        var MACRO_KEYS = [ "name", "repo" ];
-        var MACRO = {};
-        MACRO_KEYS.forEach(function(key) {
-            MACRO[key] = MACRO_NS + key;
-        });
         function Gitemplate() {
             this.settings = {
                 name: null,
+                json: {},
                 repo: null
             };
         }
@@ -156,16 +151,41 @@
             shelljs.rm("-rf", this.get("dst") + "/.git");
         };
         Gitemplate.prototype.expandContentMacros = function() {
-            return shelljs.exec(sprintf("find %s -type f -exec perl -p -i -e 's/\\{\\{" + MACRO.name + "\\}\\}/%s/g' {} \\;", this.get("dst"), this.get("name")), defShellOpt);
+            var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
+            var cmdFoot = "\\}\\}/%s/g' {} \\;";
+            var dst = this.get("dst");
+            var res = shelljs.exec(sprintf(cmdHead + ESC_MACRO("name") + cmdFoot, dst, this.get("name")), defShellOpt);
+            if (res.code !== 0) {
+                return res;
+            }
+            res = shelljs.exec(sprintf(cmdHead + ESC_MACRO("year") + cmdFoot, dst, new Date().getFullYear()), defShellOpt);
+            if (res.code !== 0) {
+                return res;
+            }
+            var repo = this.get("repo");
+            if (repo) {
+                res = shelljs.exec(sprintf(cmdHead + ESC_MACRO("repo") + cmdFoot, dst, repo.replace("/", "\\/")), defShellOpt);
+                if (res.code !== 0) {
+                    return res;
+                }
+            }
+            var json = this.get("json");
+            Object.keys(json).forEach(function(key) {
+                res = shelljs.exec(sprintf(cmdHead + ESC_MACRO(key) + cmdFoot, dst, json[key]), defShellOpt);
+                if (res.code !== 0) {
+                    return res;
+                }
+            });
+            return res;
         };
         Gitemplate.prototype.expandNameMacros = function() {
             var name = this.get("name");
             var targets = shelljs.find(this.get("dst")).filter(function(file) {
-                return file.match(MACRO.name);
+                return file.match(MACRO("name"));
             });
             for (var t = 0, target = ""; t < targets.length; t++) {
                 target = targets[t];
-                shelljs.mv(target, target.replace(MACRO.name, name));
+                shelljs.mv(target, target.replace(MACRO("name"), name));
             }
         };
         Gitemplate.prototype.initRepo = function() {
@@ -176,6 +196,12 @@
             shelljs.cd(this.get("dst"));
             return shelljs.exec(sprintf("git remote add origin git@github.com:%s.git", this.get("repo")), defShellOpt);
         };
+        function MACRO(key) {
+            return "gitemplate." + key;
+        }
+        function ESC_MACRO(key) {
+            return MACRO(key).replace(/\./, "\\.");
+        }
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");
     if (typeof exports == "object") {
