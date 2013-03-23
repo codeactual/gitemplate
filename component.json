@@ -1,7 +1,7 @@
 {
   "name": "gitemplate",
   "repo": "codeactual/gitemplate",
-  "description": "Git repo templating CLI",
+  "description": "Git cloning with template variables",
   "version": "0.1.0",
   "keywords": [
     "component",
