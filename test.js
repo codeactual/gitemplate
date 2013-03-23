@@ -78,6 +78,16 @@ describe('gitemplate', function() {
       res.should.deep.equal(this.resOK);
     });
 
+    it('should expand content "year" macro if value exists', function() {
+      var stub = this.stub(shelljs, 'exec');
+      stub.returns(this.resOK);
+      var res = this.gt.expandContentMacros();
+      stub.should.have.been.calledWith(
+        this.findCmdHead + '\\{\\{gitemplate\.year\\}\\}/1969' + this.findCmdFoot
+      );
+      res.should.deep.equal(this.resOK);
+    });
+
     it('should expand file "name" macro', function() {
       this.stubFile('/dst').readdir([
         this.stubFile('/dst/gitemplate.name')
