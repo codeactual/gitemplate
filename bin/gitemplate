@@ -17,7 +17,7 @@ gt
   .set('name', cli.name)
   .set('src', cli.src)
   .set('dst', cli.dst)
-  .set('json', JSON.parse(cli.json))
+  .set('json', JSON.parse(cli.json || '{}'))
   .set('repo', cli.repo)
   .set('nativeRequire', require)
   .init();
