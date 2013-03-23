@@ -113,7 +113,7 @@ Gitemplate.prototype.replaceNameVars = function() {
   var json = this.get('json');
   Object.keys(json).forEach(function(key) {
     var targets = shelljs.find(dst).filter(function(file) {
-      return file.match(key);
+      return file.match(ESC_TMPL_VAR(key));
     });
     targets.forEach(function(target) {
       shelljs.mv(target, target.replace(TMPL_VAR(key), json[key]));
