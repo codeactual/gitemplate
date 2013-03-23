@@ -15,9 +15,11 @@ Create a new Git repo from a templates in an existing repo.
                  --dst ~/dev/my-new-project \
                  --repo me/my-new-project
     $ ls -a
-    $ .  ..  bin  .git  .gitignore  index.json LICENSE  package.json  README.md  test.js
+    $ .  ..  .git  .gitignore  index.js  package.json  README.md  test.js val1.js val2.js
 
 ## Built-in macros
+
+To use in filenames, omit the `{{` and `}}` braces.
 
 ### `{{gitemplate.name}}`
 
@@ -27,13 +29,19 @@ Create a new Git repo from a templates in an existing repo.
 
 > Full year in local time.
 
-## Custom macro
+## Custom macros
 
-### Example file content
+> Will expand in both file names and content.
 
-{{gitemplate.engineVer}}
+### Place in a file
 
-## Example CLI flag
+    {{gitemplate.engineVer}}
+
+### Or file name
+
+    /path/to/gitemplate.engineVer.js
+
+### Then expand
 
     --json '{"engineVer":"0.10.1"}'
 
