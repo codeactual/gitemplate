@@ -18,15 +18,19 @@ requireComponent('sinon-doublist-fs')(fs, 'mocha');
 
 describe('gitemplate', function() {
   before(function() {
-    this.name = 'myproj';
+    this.name = 'my-new-proj';
     this.src = '/src';
     this.dst = '/dst';
+    this.desc = 'some browser/node proj';
     this.json = {m1: 'v1', m2: 'v2'};
     this.repo = 'user/proj';
     this.resOK = {code: 0};
     this.findCmdHead = "find /dst -type f -exec perl -p -i -e 's/";
     this.findCmdFoot = "/g' {} \\;";
-    this.findRepoCmd = this.findCmdHead + '\\{\\{gitemplate\\.repo\\}\\}/user\\/proj' + this.findCmdFoot;
+    this.findRepoCmd =
+      this.findCmdHead +
+      '\\{\\{gitemplate\\.repo\\}\\}/user\\/proj' +
+      this.findCmdFoot;
   });
 
   describe('Gitemplate', function() {
@@ -36,6 +40,7 @@ describe('gitemplate', function() {
         .set('name', this.name)
         .set('src', this.src)
         .set('dst', this.dst)
+        .set('desc', this.desc)
         .set('json', this.json)
         .set('repo', this.repo)
         .set('nativeRequire', require).init();
@@ -58,7 +63,21 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\\.name\\}\\}/myproj' + this.findCmdFoot
+        this.findCmdHead +
+        '\\{\\{gitemplate\\.name\\}\\}/my-new-proj' +
+        this.findCmdFoot
+      );
+      res.should.deep.equal(this.resOK);
+    });
+
+    it('should replace content "desc" var', function() {
+      var stub = this.stub(shelljs, 'exec');
+      stub.returns(this.resOK);
+      var res = this.gt.replaceContentVars();
+      stub.should.have.been.calledWith(
+        this.findCmdHead +
+        '\\{\\{gitemplate\\.desc\\}\\}/some browser\\/node proj' +
+        this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
@@ -109,7 +128,9 @@ describe('gitemplate', function() {
       ]).make();
       var stub = this.stub(shelljs, 'mv');
       this.gt.replaceNameVars();
-      stub.should.have.been.calledWithExactly('/dst/gitemplate.name.js', '/dst/myproj.js');
+      stub.should.have.been.calledWithExactly(
+        '/dst/gitemplate.name.js', '/dst/my-new-proj.js'
+      );
     });
 
     it('should replace custom name vars', function() {
@@ -137,7 +158,9 @@ describe('gitemplate', function() {
       stub.exec.returns(this.resOK);
       var res = this.gt.setGithubOrigin();
       stub.cd.should.have.been.calledWithExactly(this.dst);
-      stub.exec.should.have.been.calledWith('git remote add origin git@github.com:user/proj.git');
+      stub.exec.should.have.been.calledWith(
+        'git remote add origin git@github.com:user/proj.git'
+      );
       res.should.deep.equal(this.resOK);
     });
   });

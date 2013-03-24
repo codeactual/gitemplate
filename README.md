@@ -26,6 +26,16 @@ To use in filenames, omit the `{{` and `}}` braces.
 
 > Same as `--name`.
 
+### `{{gitemplate.desc}}`
+
+> Same as `--desc`.
+
+### `{{gitemplate.repo}}`
+
+> Same as `--repo`.
+
+Will also trigger `init` and `remote add origin`.
+
 ### `{{gitemplate.year}}`
 
 > Full year in local time. (Only replaced in file content.)
@@ -61,9 +71,16 @@ Build new standalone file:
 ## CLI
 
     -h, --help                              output usage information
-    -n, --name <new component>              my-new-proj
+
+### Required
+
+    -n, --name <project name>               my-new-proj
     -s, --src <source repo>                 git@github.com:me/one-of-my-templates.git
     -d, --dst <destination dir>             ~/dev/my-new-proj
+
+### Optional
+
+    -D, --desc <project description>        gets it done
     -r, --repo <user/project>               set gitemplate.repo and auto init/remote
     -j, --json <custom template variables>  '{"k1":"v1","k2":"v2",...}'
 
@@ -77,6 +94,7 @@ this.gt
   .set('name', this.name)
   .set('src', this.src)
   .set('dst', this.dst)
+  .set('desc', this.desc)
   .set('json', this.json)
   .set('repo', this.repo)
   .set('nativeRequire', require).init();
@@ -124,4 +142,4 @@ this.gt.cloneRepo();
 
 ### 0.1.0
 
-* Initial API to support: `--name`, `--src`, `--dst`, `--repo`, `--json`.
+* Initial API to support: `--name`, `--src`, `--dst`, `--desc`, `--repo`, `--json`.

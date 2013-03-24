@@ -14,15 +14,18 @@ module.exports = {
 };
 
 var configurable = require('configurable.js');
+var escapeRe = require('escape-regexp');
 var sprintf;
 var shelljs;
 var defShellOpt = {silent: true};
 
 function Gitemplate() {
   this.settings = {
-    name: null,
+    name: '',
+    desc: '',
     json: {},
-    repo: null
+    repo: '',
+    year: (new Date()).getUTCFullYear()
   };
 }
 
@@ -61,32 +64,25 @@ Gitemplate.prototype.replaceContentVars = function() {
   var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
   var cmdFoot = "\\}\\}/%s/g' {} \\;";
   var dst = this.get('dst');
+  var passThruKeys = ['name', 'desc', 'repo', 'year'];
+  var res = {code: 0};
+  var self = this;
 
-  var res = shelljs.exec(
-    sprintf(cmdHead + ESC_TMPL_VAR('name') + cmdFoot, dst, this.get('name')),
-    defShellOpt
-  );
-  if (res.code !== 0) { return res; }
-
-  res = shelljs.exec(
-    sprintf(cmdHead + ESC_TMPL_VAR('year') + cmdFoot, dst, (new Date()).getUTCFullYear()),
-    defShellOpt
-  );
-  if (res.code !== 0) { return res; }
-
-  var repo = this.get('repo');
-  if (repo) {
+  passThruKeys.forEach(function(key) {
+    if (res.code !== 0) { // Prior exec() failed, bail out.
+      return;
+    }
     res = shelljs.exec(
-      sprintf(cmdHead + ESC_TMPL_VAR('repo') + cmdFoot, dst, repo.replace('/', '\\/')),
+      sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))),
       defShellOpt
     );
-    if (res.code !== 0) { return res; }
-  }
+  });
+  if (res.code !== 0) { return res; }
 
   var json = this.get('json');
   Object.keys(json).forEach(function(key) {
     res = shelljs.exec(
-      sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, json[key]),
+      sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(json[key])),
       defShellOpt
     );
     if (res.code !== 0) { return res; }
@@ -144,5 +140,5 @@ function TMPL_VAR(key) {
   return 'gitemplate.' + key;
 }
 function ESC_TMPL_VAR(key) {
-  return TMPL_VAR(key).replace(/\./, '\\.');
+  return escapeRe(TMPL_VAR(key));
 }
