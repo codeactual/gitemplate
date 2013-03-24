@@ -148,13 +148,19 @@
             sprintf = nativeRequire("util").format;
         };
         Gitemplate.prototype.cloneRepo = function() {
-            return shelljs.exec(sprintf("git clone %s %s", this.get("src"), this.get("dst")), defShellOpt);
+            var dst = this.get("dst");
+            if (shelljs.test("-e", dst)) {
+                return {
+                    code: 1,
+                    output: "Destination already exists"
+                };
+            }
+            return shelljs.exec(sprintf("git clone %s %s", this.get("src"), dst), defShellOpt);
         };
         Gitemplate.prototype.rmGitDir = function() {
             shelljs.rm("-rf", this.get("dst") + "/.git");
         };
         Gitemplate.prototype.replaceContentVars = function() {
-            console.error("replaceContentVars");
             var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
             var cmdFoot = "\\}\\}/%s/g' {} \\;";
             var dst = this.get("dst");
@@ -165,11 +171,8 @@
             var self = this;
             passThruKeys.forEach(function(key) {
                 if (res.code !== 0) {
-                    console.error("stopping before", key);
                     return;
                 }
-                console.error("about to replace", key);
-                console.error("cmd", sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))));
                 res = shelljs.exec(sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))), defShellOpt);
             });
             if (res.code !== 0) {

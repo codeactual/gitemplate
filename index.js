@@ -44,8 +44,12 @@ Gitemplate.prototype.init = function() {
  * @return {object} shelljs exec() result.
  */
 Gitemplate.prototype.cloneRepo = function() {
+  var dst = this.get('dst');
+  if (shelljs.test('-e', dst)) {
+    return {code: 1, output: 'Destination already exists'};
+  }
   return shelljs.exec(
-    sprintf('git clone %s %s', this.get('src'), this.get('dst')),
+    sprintf('git clone %s %s', this.get('src'), dst),
     defShellOpt
   );
 };
