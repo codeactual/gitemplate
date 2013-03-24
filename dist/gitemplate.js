@@ -114,6 +114,11 @@
             return obj;
         };
     });
+    require.register("component-escape-regexp/index.js", function(exports, require, module) {
+        module.exports = function(str) {
+            return String(str).replace(/([.*+?=^!:${}()|[\]\/\\])/g, "\\$1");
+        };
+    });
     require.register("gitemplate/index.js", function(exports, require, module) {
         "use strict";
         module.exports = {
@@ -121,6 +126,7 @@
             require: require
         };
         var configurable = require("configurable.js");
+        var escapeRe = require("escape-regexp");
         var sprintf;
         var shelljs;
         var defShellOpt = {
@@ -128,9 +134,11 @@
         };
         function Gitemplate() {
             this.settings = {
-                name: null,
+                name: "",
+                desc: "",
                 json: {},
-                repo: null
+                repo: "",
+                year: new Date().getUTCFullYear()
             };
         }
         configurable(Gitemplate.prototype);
@@ -146,27 +154,30 @@
             shelljs.rm("-rf", this.get("dst") + "/.git");
         };
         Gitemplate.prototype.replaceContentVars = function() {
+            console.error("replaceContentVars");
             var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
             var cmdFoot = "\\}\\}/%s/g' {} \\;";
             var dst = this.get("dst");
-            var res = shelljs.exec(sprintf(cmdHead + ESC_TMPL_VAR("name") + cmdFoot, dst, this.get("name")), defShellOpt);
-            if (res.code !== 0) {
-                return res;
-            }
-            res = shelljs.exec(sprintf(cmdHead + ESC_TMPL_VAR("year") + cmdFoot, dst, new Date().getUTCFullYear()), defShellOpt);
-            if (res.code !== 0) {
-                return res;
-            }
-            var repo = this.get("repo");
-            if (repo) {
-                res = shelljs.exec(sprintf(cmdHead + ESC_TMPL_VAR("repo") + cmdFoot, dst, repo.replace("/", "\\/")), defShellOpt);
+            var passThruKeys = [ "name", "desc", "repo", "year" ];
+            var res = {
+                code: 0
+            };
+            var self = this;
+            passThruKeys.forEach(function(key) {
                 if (res.code !== 0) {
-                    return res;
+                    console.error("stopping before", key);
+                    return;
                 }
+                console.error("about to replace", key);
+                console.error("cmd", sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))));
+                res = shelljs.exec(sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))), defShellOpt);
+            });
+            if (res.code !== 0) {
+                return res;
             }
             var json = this.get("json");
             Object.keys(json).forEach(function(key) {
-                res = shelljs.exec(sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, json[key]), defShellOpt);
+                res = shelljs.exec(sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(json[key])), defShellOpt);
                 if (res.code !== 0) {
                     return res;
                 }
@@ -205,10 +216,11 @@
             return "gitemplate." + key;
         }
         function ESC_TMPL_VAR(key) {
-            return TMPL_VAR(key).replace(/\./, "\\.");
+            return escapeRe(TMPL_VAR(key));
         }
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");
+    require.alias("component-escape-regexp/index.js", "gitemplate/deps/escape-regexp/index.js");
     if (typeof exports == "object") {
         module.exports = require("gitemplate");
     } else if (typeof define == "function" && define.amd) {
