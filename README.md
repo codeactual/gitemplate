@@ -14,6 +14,7 @@ Git cloning with template variables.
                  --json '{"customVar1":"val1","customVar2":"val2"}' \
                  --src git@github.com:me/my-old-template.git \
                  --dst ~/dev/my-new-project \
+                 --desc 'gets it done' \
                  --repo me/my-new-project
     $ ls -a
     $ .  ..  .git  .gitignore  index.js  package.json  README.md  test.js val1.js val2.js
