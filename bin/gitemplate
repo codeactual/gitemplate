@@ -11,11 +11,11 @@ var cli = require('commander');
 var Gitemplate = require(__dirname + '/../dist/gitemplate').Gitemplate;
 
 cli
-  .option('-n, --name <new component>', '', String)
-  .option('-s, --src <source repo>', '', String)
-  .option('-d, --dst <destination dir>', '', String)
-  .option('-r, --repo <user/project>', '', String)
-  .option('-j, --json <custom template variables>', '', String)
+  .option('-n, --name <new component>', 'my-new-proj', String)
+  .option('-s, --src <source repo>', 'git@github.com:me/one-of-my-templates.git', String)
+  .option('-d, --dst <destination dir>', '~/dev/my-new-proj', String)
+  .option('-r, --repo <user/project>', 'set gitemplate.repo and auto init/remote', String)
+  .option('-j, --json <custom template variables>', '\'{"k1":"v1","k2":"v2",...}\'', String)
   .parse(process.argv);
 
 var gt = new Gitemplate();
