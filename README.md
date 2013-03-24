@@ -60,12 +60,12 @@ Build new standalone file:
 
 ## CLI
 
-    -h, --help
-    -n, --name <new component>
-    -s, --src <source repo>
-    -d, --dst <destination dir>
-    -r, --repo <user/project>
-    -j, --json <custom template variables>
+    -h, --help                              output usage information
+    -n, --name <new component>              my-new-proj
+    -s, --src <source repo>                 git@github.com:me/one-of-my-templates.git
+    -d, --dst <destination dir>             ~/dev/my-new-proj
+    -r, --repo <user/project>               set gitemplate.repo and auto init/remote
+    -j, --json <custom template variables>  '{"k1":"v1","k2":"v2",...}'
 
 ## API
 
