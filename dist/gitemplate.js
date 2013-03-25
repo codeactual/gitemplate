@@ -223,7 +223,7 @@
         };
         Gitemplate.prototype.getRepoOriginUrl = function() {
             shelljs.cd(this.get("dst"));
-            return shelljs.exec("git remote show origin").output.match(/Fetch\s+URL: (\S+)/)[1];
+            return shelljs.exec("git remote show origin", defShellOpt).output.match(/Fetch\s+URL: (\S+)/)[1];
         };
         function TMPL_VAR(key) {
             return "gitemplate." + key;
