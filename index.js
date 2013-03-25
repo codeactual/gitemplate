@@ -140,6 +140,22 @@ Gitemplate.prototype.setGithubOrigin = function() {
   );
 };
 
+/**
+ * @return {string}
+ */
+Gitemplate.prototype.getRepoSha = function() {
+  shelljs.cd(this.get('dst'));
+  return shelljs.exec('git rev-parse HEAD', defShellOpt).output.slice(0, 10);
+};
+
+/**
+ * @return {string}
+ */
+Gitemplate.prototype.getRepoRemoteOriginUrl = function() {
+  shelljs.cd(this.get('dst'));
+  return shelljs.exec('git remote show origin').output.match(/Fetch\s+URL: (\S+)/)[1];
+};
+
 function TMPL_VAR(key) {
   return 'gitemplate.' + key;
 }
