@@ -45,6 +45,10 @@ requiredParams.forEach(function(param) {
 });
 
 abortOnErrorResult(gt.cloneRepo());
+
+gt.set('originSha', gt.getRepoOriginSha());
+gt.set('originUrl', gt.getRepoOriginUrl());
+
 gt.rmGitDir();
 abortOnErrorResult(gt.replaceContentVars());
 gt.replaceNameVars();

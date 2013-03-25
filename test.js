@@ -167,7 +167,7 @@ describe('gitemplate', function() {
     it('should get repo sha', function() {
       var stub = this.stubMany(shelljs, ['cd', 'exec']);
       stub.exec.returns({output: '7858ada150cf927d6d8a6b3a7f8b63d9917d4185'});
-      this.gt.getRepoSha().should.equal('7858ada150');
+      this.gt.getRepoOriginSha().should.equal('7858ada150');
     });
 
     it('should get remote origin url', function() {
@@ -178,7 +178,7 @@ describe('gitemplate', function() {
           'Fetch URL: git@github.com:user/repo-fetch.git\n' +
           'Push  URL: git@github.com:user/repo-push.git\n'
       });
-      this.gt.getRepoRemoteOriginUrl().should.equal('git@github.com:user/repo-fetch.git');
+      this.gt.getRepoOriginUrl().should.equal('git@github.com:user/repo-fetch.git');
     });
   });
 });

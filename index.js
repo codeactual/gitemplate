@@ -25,7 +25,9 @@ function Gitemplate() {
     desc: '',
     json: {},
     repo: '',
-    year: (new Date()).getUTCFullYear()
+    year: (new Date()).getUTCFullYear(),
+    originSha: '',
+    originUrl: ''
   };
 }
 
@@ -68,7 +70,7 @@ Gitemplate.prototype.replaceContentVars = function() {
   var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
   var cmdFoot = "\\}\\}/%s/g' {} \\;";
   var dst = this.get('dst');
-  var passThruKeys = ['name', 'desc', 'repo', 'year'];
+  var passThruKeys = ['name', 'desc', 'repo', 'year', 'originSha', 'originUrl'];
   var res = {code: 0};
   var self = this;
 
@@ -143,7 +145,7 @@ Gitemplate.prototype.setGithubOrigin = function() {
 /**
  * @return {string}
  */
-Gitemplate.prototype.getRepoSha = function() {
+Gitemplate.prototype.getRepoOriginSha = function() {
   shelljs.cd(this.get('dst'));
   return shelljs.exec('git rev-parse HEAD', defShellOpt).output.slice(0, 10);
 };
@@ -151,7 +153,7 @@ Gitemplate.prototype.getRepoSha = function() {
 /**
  * @return {string}
  */
-Gitemplate.prototype.getRepoRemoteOriginUrl = function() {
+Gitemplate.prototype.getRepoOriginUrl = function() {
   shelljs.cd(this.get('dst'));
   return shelljs.exec('git remote show origin').output.match(/Fetch\s+URL: (\S+)/)[1];
 };

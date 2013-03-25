@@ -41,6 +41,14 @@ Will also trigger `init` and `remote add origin`.
 
 > Full year in local time. (Only replaced in file content.)
 
+### `{{gitemplate.originSha}}`
+
+> Cloned origin's commit SHA-1 (first 10 chars). (Only replaced in file content.)
+
+### `{{gitemplate.originUrl}}`
+
+> Cloned origin's URL. (Only replaced in file content.)
+
 ## Custom vars
 
 > Will also replace in file names and content.
