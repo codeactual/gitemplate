@@ -9,6 +9,8 @@ Git cloning with template variables.
 
 ## Example
 
+### Usage
+
     $ gitemplate --help
     $ gitemplate --name my-new-project \
                  --json '{"customVar1":"val1","customVar2":"val2"}' \
@@ -18,6 +20,11 @@ Git cloning with template variables.
                  --repo me/my-new-project
     $ ls -a
     $ .  ..  .git  .gitignore  index.js  package.json  README.md  test.js val1.js val2.js
+
+### Template Repos
+
+* [node component](https://github.com/codeactual/gitemplate-node-component)
+* [node component w/ bin script](https://github.com/codeactual/gitemplate-node-bin-component)
 
 ## Built-in variables
 
