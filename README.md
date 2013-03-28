@@ -28,6 +28,8 @@ Git cloning with template variables.
 
 ## Built-in variables
 
+Case-insensitive.
+
 ### `gitemplate_name`
 
 > Same as `--name`.
@@ -56,7 +58,7 @@ Will also trigger `init` and `remote add origin`.
 
 ## Custom vars
 
-> Will also replace in file names and content.
+> Will also replace in file names and content. Case insensitive.
 
 ### Place in a file
 
