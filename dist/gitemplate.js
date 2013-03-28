@@ -163,8 +163,8 @@
             shelljs.rm("-rf", this.get("dst") + "/.git");
         };
         Gitemplate.prototype.replaceContentVars = function() {
-            var cmdHead = "find %s -type f -exec perl -p -i -e 's/\\{\\{";
-            var cmdFoot = "\\}\\}/%s/g' {} \\;";
+            var cmdHead = "find %s -type f -exec perl -p -i -e 's/";
+            var cmdFoot = "/%s/gi' {} \\;";
             var dst = this.get("dst");
             var passThruKeys = [ "name", "desc", "repo", "year", "originSha", "originUrl" ];
             var res = {
@@ -226,7 +226,7 @@
             return shelljs.exec("git remote show origin", defShellOpt).output.match(/Fetch\s+URL: (\S+)/)[1];
         };
         function TMPL_VAR(key) {
-            return "gitemplate." + key;
+            return "gitemplate_" + key;
         }
         function ESC_TMPL_VAR(key) {
             return escapeRe(TMPL_VAR(key));

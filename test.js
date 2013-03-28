@@ -26,10 +26,10 @@ describe('gitemplate', function() {
     this.repo = 'user/proj';
     this.resOK = {code: 0};
     this.findCmdHead = "find /dst -type f -exec perl -p -i -e 's/";
-    this.findCmdFoot = "/g' {} \\;";
+    this.findCmdFoot = "/gi' {} \\;";
     this.findRepoCmd =
       this.findCmdHead +
-      '\\{\\{gitemplate\\.repo\\}\\}/user\\/proj' +
+      'gitemplate_repo/user\\/proj' +
       this.findCmdFoot;
   });
 
@@ -64,7 +64,7 @@ describe('gitemplate', function() {
       var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         this.findCmdHead +
-        '\\{\\{gitemplate\\.name\\}\\}/my-new-proj' +
+        'gitemplate_name/my-new-proj' +
         this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
@@ -76,7 +76,7 @@ describe('gitemplate', function() {
       var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         this.findCmdHead +
-        '\\{\\{gitemplate\\.desc\\}\\}/some browser\\/node proj' +
+        'gitemplate_desc/some browser\\/node proj' +
         this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
@@ -104,7 +104,7 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\\.year\\}\\}/1970' + this.findCmdFoot
+        this.findCmdHead + 'gitemplate_year/1970' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
@@ -114,34 +114,34 @@ describe('gitemplate', function() {
       stub.returns(this.resOK);
       var res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\\.m1\\}\\}/v1' + this.findCmdFoot
+        this.findCmdHead + 'gitemplate_m1/v1' + this.findCmdFoot
       );
       stub.should.have.been.calledWith(
-        this.findCmdHead + '\\{\\{gitemplate\\.m2\\}\\}/v2' + this.findCmdFoot
+        this.findCmdHead + 'gitemplate_m2/v2' + this.findCmdFoot
       );
       res.should.deep.equal(this.resOK);
     });
 
     it('should replace file "name" var', function() {
       this.stubFile('/dst').readdir([
-        this.stubFile('/dst/gitemplate.name.js')
+        this.stubFile('/dst/gitemplate_name.js')
       ]).make();
       var stub = this.stub(shelljs, 'mv');
       this.gt.replaceNameVars();
       stub.should.have.been.calledWithExactly(
-        '/dst/gitemplate.name.js', '/dst/my-new-proj.js'
+        '/dst/gitemplate_name.js', '/dst/my-new-proj.js'
       );
     });
 
     it('should replace custom name vars', function() {
       this.stubFile('/dst').readdir([
-        this.stubFile('/dst/gitemplate.m1.js'),
-        this.stubFile('/dst/gitemplate.m2.js')
+        this.stubFile('/dst/gitemplate_m1.js'),
+        this.stubFile('/dst/gitemplate_m2.js')
       ]).make();
       var stub = this.stub(shelljs, 'mv');
       var res = this.gt.replaceNameVars();
-      stub.should.have.been.calledWithExactly('/dst/gitemplate.m1.js', '/dst/v1.js');
-      stub.should.have.been.calledWithExactly('/dst/gitemplate.m2.js', '/dst/v2.js');
+      stub.should.have.been.calledWithExactly('/dst/gitemplate_m1.js', '/dst/v1.js');
+      stub.should.have.been.calledWithExactly('/dst/gitemplate_m2.js', '/dst/v2.js');
     });
 
     it('should init repo', function() {

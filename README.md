@@ -21,31 +21,29 @@ Git cloning with template variables.
 
 ## Built-in variables
 
-To use in filenames, omit the `{{` and `}}` braces.
-
-### `{{gitemplate.name}}`
+### `gitemplate_name`
 
 > Same as `--name`.
 
-### `{{gitemplate.desc}}`
+### `gitemplate_desc`
 
 > Same as `--desc`.
 
-### `{{gitemplate.repo}}`
+### `gitemplate_repo`
 
 > Same as `--repo`.
 
 Will also trigger `init` and `remote add origin`.
 
-### `{{gitemplate.year}}`
+### `gitemplate_year`
 
 > Full year in local time. (Only replaced in file content.)
 
-### `{{gitemplate.originSha}}`
+### `gitemplate_originSha`
 
 > Cloned origin's commit SHA-1 (first 10 chars). (Only replaced in file content.)
 
-### `{{gitemplate.originUrl}}`
+### `gitemplate_originUrl`
 
 > Cloned origin's URL. (Only replaced in file content.)
 
@@ -55,11 +53,11 @@ Will also trigger `init` and `remote add origin`.
 
 ### Place in a file
 
-    {{gitemplate.engineVer}}
+    gitemplate_engineVer
 
 ### Or file name
 
-    /path/to/gitemplate.engineVer.js
+    /path/to/gitemplate_engineVer.js
 
 ### Then replace
 
