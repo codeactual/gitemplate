@@ -15,6 +15,7 @@ module.exports = {
 
 var configurable = require('configurable.js');
 var escapeRe = require('escape-regexp');
+var util;
 var sprintf;
 var shelljs;
 var defShellOpt = {silent: true};
@@ -38,8 +39,13 @@ configurable(Gitemplate.prototype);
  */
 Gitemplate.prototype.init = function() {
   var nativeRequire = this.get('nativeRequire');
+  util = nativeRequire('util');
+  sprintf = util.format;
   shelljs = nativeRequire('shelljs');
-  sprintf = nativeRequire('util').format;
+
+  if (this.get('verbose')) {
+    defShellOpt.silent = false;
+  }
 };
 
 /**
@@ -47,10 +53,11 @@ Gitemplate.prototype.init = function() {
  */
 Gitemplate.prototype.cloneRepo = function() {
   var dst = this.get('dst');
-  if (shelljs.test('-e', dst)) {
+  if (shell('test', '-e', dst)) {
     return {code: 1, output: 'Destination already exists'};
   }
-  return shelljs.exec(
+  return shell(
+    'exec',
     sprintf('git clone %s %s', this.get('src'), dst),
     defShellOpt
   );
@@ -60,7 +67,7 @@ Gitemplate.prototype.cloneRepo = function() {
  * Prep for new init and remote origin.
  */
 Gitemplate.prototype.rmGitDir = function() {
-  shelljs.rm('-rf', this.get('dst') + '/.git');
+  shell('rm', '-rf', this.get('dst') + '/.git');
 };
 
 /**
@@ -78,7 +85,8 @@ Gitemplate.prototype.replaceContentVars = function() {
     if (res.code !== 0) { // Prior exec() failed, bail out.
       return;
     }
-    res = shelljs.exec(
+    res = shell(
+      'exec',
       sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))),
       defShellOpt
     );
@@ -87,7 +95,8 @@ Gitemplate.prototype.replaceContentVars = function() {
 
   var json = this.get('json');
   Object.keys(json).forEach(function(key) {
-    res = shelljs.exec(
+    res = shell(
+      'exec',
       sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(json[key])),
       defShellOpt
     );
@@ -105,20 +114,20 @@ Gitemplate.prototype.replaceNameVars = function() {
   var dst = this.get('dst');
 
   var nameVar = TMPL_VAR('name');
-  var targets = shelljs.find(dst).filter(function(file) {
+  var targets = shell('find', dst).filter(function(file) {
     return file.match(nameVar);
   });
   targets.forEach(function(target) {
-    shelljs.mv(target, target.replace(nameVar, name));
+    shell('mv', target, target.replace(nameVar, name));
   });
 
   var json = this.get('json');
   Object.keys(json).forEach(function(key) {
-    var targets = shelljs.find(dst).filter(function(file) {
+    var targets = shell('find', dst).filter(function(file) {
       return file.match(ESC_TMPL_VAR(key));
     });
     targets.forEach(function(target) {
-      shelljs.mv(target, target.replace(TMPL_VAR(key), json[key]));
+      shell('mv', target, target.replace(TMPL_VAR(key), json[key]));
     });
   });
 };
@@ -127,16 +136,17 @@ Gitemplate.prototype.replaceNameVars = function() {
  * @return {object} shelljs exec() result.
  */
 Gitemplate.prototype.initRepo = function() {
-  shelljs.cd(this.get('dst'));
-  return shelljs.exec('git init', defShellOpt);
+  shell('cd', this.get('dst'));
+  return shell('exec', 'git init', defShellOpt);
 };
 
 /**
  * Set GitHub remote origin.
  */
 Gitemplate.prototype.setGithubOrigin = function() {
-  shelljs.cd(this.get('dst'));
-  return shelljs.exec(
+  shell('cd', this.get('dst'));
+  return shell(
+    'exec',
     sprintf('git remote add origin git@github.com:%s.git', this.get('repo')),
     defShellOpt
   );
@@ -146,17 +156,53 @@ Gitemplate.prototype.setGithubOrigin = function() {
  * @return {string}
  */
 Gitemplate.prototype.getRepoOriginSha = function() {
-  shelljs.cd(this.get('dst'));
-  return shelljs.exec('git rev-parse HEAD', defShellOpt).output.slice(0, 10);
+  shell('cd', this.get('dst'));
+  return shell('exec', 'git rev-parse HEAD', defShellOpt).output.slice(0, 10);
 };
 
 /**
  * @return {string}
  */
 Gitemplate.prototype.getRepoOriginUrl = function() {
-  shelljs.cd(this.get('dst'));
-  return shelljs.exec('git remote show origin', defShellOpt).output.match(/Fetch\s+URL: (\S+)/)[1];
+  shell('cd', this.get('dst'));
+  return shell('exec', 'git remote show origin', defShellOpt).output.match(/Fetch\s+URL: (\S+)/)[1];
 };
+
+/**
+ * @return {string}
+ */
+Gitemplate.prototype.getRepoOriginSha = function() {
+  shell('cd', this.get('dst'));
+  return shell('exec', 'git rev-parse HEAD', defShellOpt).output.slice(0, 10);
+};
+
+/**
+ * @return {object} shelljs exec() result.
+ */
+Gitemplate.prototype.runPostReplace = function() {
+  var dst = this.get('dst');
+  var script = dst + '/.gitemplate.postreplace';
+  if (!shell('test', '-e', script)) {
+    return;
+  }
+  shell('cd', dst);
+  var res = shell('exec', script, defShellOpt);
+  if (res.code === 0) {
+    shell('rm', '-f', script);
+  }
+  return res;
+};
+
+/**
+ * shelljs.* wrapper().
+ */
+function shell(method) {
+  var args = [].slice.call(arguments, 1);
+  if (!defShellOpt.silent) {
+    util.debug(sprintf('%s(%s)', method, JSON.stringify(args)));
+  }
+  return shelljs[method].apply(shelljs, args);
+}
 
 function TMPL_VAR(key) {
   return 'gitemplate_' + key;

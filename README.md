@@ -4,10 +4,11 @@ Git cloning with template variables.
 
 * Replace variables in file names and content.
 * Optional GitHub repo init and remote origin setup.
+* Custom post-processing scripts.
 
 [![Build Status](https://travis-ci.org/codeactual/gitemplate.png)](https://travis-ci.org/codeactual/gitemplate)
 
-## Example
+## Examples
 
     gitemplate --help
 
@@ -88,6 +89,21 @@ Will also trigger `init` and `remote add origin`.
 
     --json '{"engineVer":"0.10.1"}'
 
+## Post-processing scripts
+
+Will be auto-deleted after successful execution.
+
+### Run after template variable replacement
+
+Add an executable `.gitemplate.postreplace` file to the root.
+
+node.js example that installs all dependencies and runs the unit tests:
+
+    #!/bin/sh
+
+    npm install
+    npm test
+
 ## Installation
 
 ### [Component](https://github.com/component/component)
@@ -103,6 +119,7 @@ Build new standalone file:
 ## CLI
 
     -h, --help                              output usage information
+    -v, --verbose
 
 ### Required
 

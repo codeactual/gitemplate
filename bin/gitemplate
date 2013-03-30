@@ -17,6 +17,7 @@ cli
   .option('-D, --desc <project description>', 'gets it done', String, '')
   .option('-r, --repo <user/project>', 'set gitemplate.repo and auto init/remote', String, '')
   .option('-j, --json <custom template variables>', '\'{"k1":"v1","k2":"v2",...}\'', String, '{}')
+  .option('-v, --verbose')
   .parse(process.argv);
 
 var gt = new Gitemplate();
@@ -27,6 +28,7 @@ gt
   .set('desc', cli.desc)
   .set('json', JSON.parse(cli.json))
   .set('repo', cli.repo)
+  .set('verbose', cli.verbose)
   .set('nativeRequire', require)
   .init();
 
@@ -57,3 +59,5 @@ if (cli.repo) {
   abortOnErrorResult(gt.initRepo());
   abortOnErrorResult(gt.setGithubOrigin());
 }
+
+abortOnErrorResult(gt.runPostReplace());
