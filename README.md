@@ -9,17 +9,30 @@ Git cloning with template variables.
 
 ## Example
 
-### Usage
+    gitemplate --help
 
-    $ gitemplate --help
-    $ gitemplate --name my-new-project \
-                 --json '{"customVar1":"val1","customVar2":"val2"}' \
-                 --src git@github.com:me/my-old-template.git \
-                 --dst ~/dev/my-new-project \
-                 --desc 'gets it done' \
-                 --repo me/my-new-project
-    $ ls -a
-    $ .  ..  .git  .gitignore  index.js  package.json  README.md  test.js val1.js val2.js
+### Basic clone
+
+    gitemplate --name my-new-project \
+               --src git@github.com:me/my-old-template.git \
+               --dst ~/dev/my-new-project \
+               --desc 'gets it done' \
+
+### Auto init and set remote GitHub origin via `--repo`
+
+    gitemplate --name my-new-project \
+               --src git@github.com:me/my-old-template.git \
+               --dst ~/dev/my-new-project \
+               --desc 'gets it done' \
+               --repo me/my-new-project
+
+### Custom variables via `--json`
+
+    gitemplate --name my-new-project \
+               --src git@github.com:me/my-old-template.git \
+               --dst ~/dev/my-new-project \
+               --desc 'gets it done' \
+               --json '{"customVar1":"val1","customVar2":"val2"}' \
 
 ### Template Repos
 
