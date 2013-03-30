@@ -23,9 +23,11 @@ Git cloning with template variables.
 
 ### Template Repos
 
-* [![Build Status](https://travis-ci.org/codeactual/gitemplate-node-component.png)](https://travis-ci.org/codeactual/gitemplate-node-component) [node component](https://github.com/codeactual/gitemplate-node-component)
-* [![Build Status](https://travis-ci.org/codeactual/gitemplate-node-bin-component.png)](https://travis-ci.org/codeactual/gitemplate-node-bin-component) [node component w/ bin script](https://github.com/codeactual/gitemplate-node-bin-component)
-* [![Build Status](https://travis-ci.org/codeactual/gitemplate-connect-middleware.png)](https://travis-ci.org/codeactual/gitemplate-connect-middleware) [connect middleware component](https://github.com/codeactual/gitemplate-connect-middleware)
+[![Build Status](https://travis-ci.org/codeactual/gitemplate-node-component.png)](https://travis-ci.org/codeactual/gitemplate-node-component) [node component](https://github.com/codeactual/gitemplate-node-component)
+
+[![Build Status](https://travis-ci.org/codeactual/gitemplate-node-bin-component.png)](https://travis-ci.org/codeactual/gitemplate-node-bin-component) [node component w/ bin script](https://github.com/codeactual/gitemplate-node-bin-component)
+
+[![Build Status](https://travis-ci.org/codeactual/gitemplate-connect-middleware.png)](https://travis-ci.org/codeactual/gitemplate-connect-middleware) [connect middleware component](https://github.com/codeactual/gitemplate-connect-middleware)
 
 ## Built-in variables
 
