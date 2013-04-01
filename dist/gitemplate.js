@@ -119,6 +119,109 @@
             return String(str).replace(/([.*+?=^!:${}()|[\]\/\\])/g, "\\$1");
         };
     });
+    require.register("component-indexof/index.js", function(exports, require, module) {
+        var indexOf = [].indexOf;
+        module.exports = function(arr, obj) {
+            if (indexOf) return arr.indexOf(obj);
+            for (var i = 0; i < arr.length; ++i) {
+                if (arr[i] === obj) return i;
+            }
+            return -1;
+        };
+    });
+    require.register("component-emitter/index.js", function(exports, require, module) {
+        var index = require("indexof");
+        module.exports = Emitter;
+        function Emitter(obj) {
+            if (obj) return mixin(obj);
+        }
+        function mixin(obj) {
+            for (var key in Emitter.prototype) {
+                obj[key] = Emitter.prototype[key];
+            }
+            return obj;
+        }
+        Emitter.prototype.on = function(event, fn) {
+            this._callbacks = this._callbacks || {};
+            (this._callbacks[event] = this._callbacks[event] || []).push(fn);
+            return this;
+        };
+        Emitter.prototype.once = function(event, fn) {
+            var self = this;
+            this._callbacks = this._callbacks || {};
+            function on() {
+                self.off(event, on);
+                fn.apply(this, arguments);
+            }
+            fn._off = on;
+            this.on(event, on);
+            return this;
+        };
+        Emitter.prototype.off = Emitter.prototype.removeListener = Emitter.prototype.removeAllListeners = function(event, fn) {
+            this._callbacks = this._callbacks || {};
+            if (0 == arguments.length) {
+                this._callbacks = {};
+                return this;
+            }
+            var callbacks = this._callbacks[event];
+            if (!callbacks) return this;
+            if (1 == arguments.length) {
+                delete this._callbacks[event];
+                return this;
+            }
+            var i = index(callbacks, fn._off || fn);
+            if (~i) callbacks.splice(i, 1);
+            return this;
+        };
+        Emitter.prototype.emit = function(event) {
+            this._callbacks = this._callbacks || {};
+            var args = [].slice.call(arguments, 1), callbacks = this._callbacks[event];
+            if (callbacks) {
+                callbacks = callbacks.slice(0);
+                for (var i = 0, len = callbacks.length; i < len; ++i) {
+                    callbacks[i].apply(this, args);
+                }
+            }
+            return this;
+        };
+        Emitter.prototype.listeners = function(event) {
+            this._callbacks = this._callbacks || {};
+            return this._callbacks[event] || [];
+        };
+        Emitter.prototype.hasListeners = function(event) {
+            return !!this.listeners(event).length;
+        };
+    });
+    require.register("codeactual-outer-shelljs/index.js", function(exports, require, module) {
+        "use strict";
+        module.exports = {
+            OuterShelljs: OuterShelljs,
+            create: create,
+            require: require
+        };
+        var emitter = require("emitter");
+        function OuterShelljs(shelljs) {
+            this.shelljs = shelljs;
+        }
+        emitter(OuterShelljs.prototype);
+        OuterShelljs.prototype.findByRegex = function(parent, regex) {
+            return this._("find", parent).filter(function(file) {
+                return file.match(regex);
+            });
+        };
+        OuterShelljs.prototype._ = function(method) {
+            var args = [].slice.call(arguments, 1);
+            var res = this.shelljs[method].apply(this.shelljs, args);
+            var eventArgs = [ "cmd", method, args, res ];
+            this.emit.apply(this, eventArgs);
+            eventArgs = [ "cmd:" + method, args, res ];
+            this.emit.apply(this, eventArgs);
+            return res;
+        };
+        function create(shelljs) {
+            return new OuterShelljs(shelljs);
+        }
+    });
     require.register("gitemplate/index.js", function(exports, require, module) {
         "use strict";
         module.exports = {
@@ -149,23 +252,29 @@
             var nativeRequire = this.get("nativeRequire");
             util = nativeRequire("util");
             sprintf = util.format;
-            shelljs = nativeRequire("shelljs");
+            shelljs = require("outer-shelljs").create(nativeRequire("shelljs"));
             if (this.get("verbose")) {
                 defShellOpt.silent = false;
             }
+            if (!defShellOpt.silent) {
+                shelljs.on("cmd", this.onShellCmd);
+            }
+        };
+        Gitemplate.prototype.onShellCmd = function(method, args, ret) {
+            util.debug(sprintf("%s(%s)", method, JSON.stringify(args)));
         };
         Gitemplate.prototype.cloneRepo = function() {
             var dst = this.get("dst");
-            if (shell("test", "-e", dst)) {
+            if (shelljs._("test", "-e", dst)) {
                 return {
                     code: 1,
                     output: "Destination already exists"
                 };
             }
-            return shell("exec", sprintf("git clone %s %s", this.get("src"), dst), defShellOpt);
+            return shelljs._("exec", sprintf("git clone %s %s", this.get("src"), dst), defShellOpt);
         };
         Gitemplate.prototype.rmGitDir = function() {
-            shell("rm", "-rf", this.get("dst") + "/.git");
+            shelljs._("rm", "-rf", this.get("dst") + "/.git");
         };
         Gitemplate.prototype.replaceContentVars = function() {
             var cmdHead = "find %s -type f -exec perl -p -i -e 's/";
@@ -180,14 +289,14 @@
                 if (res.code !== 0) {
                     return;
                 }
-                res = shell("exec", sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))), defShellOpt);
+                res = shelljs._("exec", sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(self.get(key))), defShellOpt);
             });
             if (res.code !== 0) {
                 return res;
             }
             var json = this.get("json");
             Object.keys(json).forEach(function(key) {
-                res = shell("exec", sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(json[key])), defShellOpt);
+                res = shelljs._("exec", sprintf(cmdHead + ESC_TMPL_VAR(key) + cmdFoot, dst, escapeRe(json[key])), defShellOpt);
                 if (res.code !== 0) {
                     return res;
                 }
@@ -198,62 +307,55 @@
             var name = this.get("name");
             var dst = this.get("dst");
             var nameVar = TMPL_VAR("name");
-            var targets = shell("find", dst).filter(function(file) {
+            var targets = shelljs._("find", dst).filter(function(file) {
                 return file.match(nameVar);
             });
             targets.forEach(function(target) {
-                shell("mv", target, target.replace(nameVar, name));
+                shelljs._("mv", target, target.replace(nameVar, name));
             });
             var json = this.get("json");
             Object.keys(json).forEach(function(key) {
-                var targets = shell("find", dst).filter(function(file) {
+                var targets = shelljs._("find", dst).filter(function(file) {
                     return file.match(ESC_TMPL_VAR(key));
                 });
                 targets.forEach(function(target) {
-                    shell("mv", target, target.replace(TMPL_VAR(key), json[key]));
+                    shelljs._("mv", target, target.replace(TMPL_VAR(key), json[key]));
                 });
             });
         };
         Gitemplate.prototype.initRepo = function() {
-            shell("cd", this.get("dst"));
-            return shell("exec", "git init", defShellOpt);
+            shelljs._("cd", this.get("dst"));
+            return shelljs._("exec", "git init", defShellOpt);
         };
         Gitemplate.prototype.setGithubOrigin = function() {
-            shell("cd", this.get("dst"));
-            return shell("exec", sprintf("git remote add origin git@github.com:%s.git", this.get("repo")), defShellOpt);
+            shelljs._("cd", this.get("dst"));
+            return shelljs._("exec", sprintf("git remote add origin git@github.com:%s.git", this.get("repo")), defShellOpt);
         };
         Gitemplate.prototype.getRepoOriginSha = function() {
-            shell("cd", this.get("dst"));
-            return shell("exec", "git rev-parse HEAD", defShellOpt).output.slice(0, 10);
+            shelljs._("cd", this.get("dst"));
+            return shelljs._("exec", "git rev-parse HEAD", defShellOpt).output.slice(0, 10);
         };
         Gitemplate.prototype.getRepoOriginUrl = function() {
-            shell("cd", this.get("dst"));
-            return shell("exec", "git remote show origin", defShellOpt).output.match(/Fetch\s+URL: (\S+)/)[1];
+            shelljs._("cd", this.get("dst"));
+            return shelljs._("exec", "git remote show origin", defShellOpt).output.match(/Fetch\s+URL: (\S+)/)[1];
         };
         Gitemplate.prototype.getRepoOriginSha = function() {
-            shell("cd", this.get("dst"));
-            return shell("exec", "git rev-parse HEAD", defShellOpt).output.slice(0, 10);
+            shelljs._("cd", this.get("dst"));
+            return shelljs._("exec", "git rev-parse HEAD", defShellOpt).output.slice(0, 10);
         };
         Gitemplate.prototype.runPostReplace = function() {
             var dst = this.get("dst");
             var script = dst + "/.gitemplate.postreplace";
-            if (!shell("test", "-e", script)) {
+            if (!shelljs._("test", "-e", script)) {
                 return;
             }
-            shell("cd", dst);
-            var res = shell("exec", script, defShellOpt);
+            shelljs._("cd", dst);
+            var res = shelljs._("exec", script, defShellOpt);
             if (res.code === 0) {
-                shell("rm", "-f", script);
+                shelljs._("rm", "-f", script);
             }
             return res;
         };
-        function shell(method) {
-            var args = [].slice.call(arguments, 1);
-            if (!defShellOpt.silent) {
-                util.debug(sprintf("%s(%s)", method, JSON.stringify(args)));
-            }
-            return shelljs[method].apply(shelljs, args);
-        }
         function TMPL_VAR(key) {
             return "gitemplate_" + key;
         }
@@ -263,6 +365,9 @@
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");
     require.alias("component-escape-regexp/index.js", "gitemplate/deps/escape-regexp/index.js");
+    require.alias("codeactual-outer-shelljs/index.js", "gitemplate/deps/outer-shelljs/index.js");
+    require.alias("component-emitter/index.js", "codeactual-outer-shelljs/deps/emitter/index.js");
+    require.alias("component-indexof/index.js", "component-emitter/deps/indexof/index.js");
     if (typeof exports == "object") {
         module.exports = require("gitemplate");
     } else if (typeof define == "function" && define.amd) {
