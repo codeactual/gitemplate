@@ -45,7 +45,7 @@ module.exports = function(grunt) {
     },
     shell: {
       build: {
-        command: 'component install --dev && component build --standalone gitemplate --name build --dev'
+        command: 'component install --dev && component build --standalone gitemplate --name gitemplate --out dist --dev'
       },
       dist: {
         command: 'component build --standalone gitemplate --name gitemplate --out dist'

@@ -9,7 +9,7 @@ var should = chai.should();
 chai.Assertion.includeStack = true;
 chai.use(require('sinon-chai'));
 
-var gitemplate = require('./build/build');
+var gitemplate = require('./dist/gitemplate');
 var Gitemplate = gitemplate.Gitemplate;
 var requireComponent = gitemplate.require;
 
