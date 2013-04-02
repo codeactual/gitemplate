@@ -10,6 +10,7 @@
 
 module.exports = {
   Gitemplate: Gitemplate,
+  mixin: mixin,
   require: require
 };
 
@@ -200,6 +201,19 @@ Gitemplate.prototype.runPostReplace = function() {
   }
   return res;
 };
+
+/**
+ * Mix the given function set into Gitemplate's prototype.
+ *
+ * @param {object} ext
+ */
+function mixin(ext) {
+  Object.keys(ext).forEach(function(key) {
+    if (typeof ext[key] === 'function') {
+      Gitemplate.prototype[key] = ext[key];
+    }
+  });
+}
 
 function TMPL_VAR(key) {
   return 'gitemplate_' + key;

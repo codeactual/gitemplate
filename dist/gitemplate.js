@@ -226,6 +226,7 @@
         "use strict";
         module.exports = {
             Gitemplate: Gitemplate,
+            mixin: mixin,
             require: require
         };
         var configurable = require("configurable.js");
@@ -356,6 +357,13 @@
             }
             return res;
         };
+        function mixin(ext) {
+            Object.keys(ext).forEach(function(key) {
+                if (typeof ext[key] === "function") {
+                    Gitemplate.prototype[key] = ext[key];
+                }
+            });
+        }
         function TMPL_VAR(key) {
             return "gitemplate_" + key;
         }
