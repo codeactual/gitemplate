@@ -10,8 +10,6 @@ Git cloning with template variables.
 
 ## Examples
 
-    gitemplate --help
-
 ### Basic clone
 
     gitemplate --name my-new-project \
