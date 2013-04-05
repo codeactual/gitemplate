@@ -262,7 +262,7 @@
             }
         };
         Gitemplate.prototype.onShellCmd = function(method, args, ret) {
-            util.debug(sprintf("%s(%s)", method, JSON.stringify(args)));
+            util.debug(sprintf("[%s] %s(%s)", new Date().toUTCString(), method, JSON.stringify(args)));
         };
         Gitemplate.prototype.cloneRepo = function() {
             var dst = this.get("dst");

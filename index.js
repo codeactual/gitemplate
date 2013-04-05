@@ -54,7 +54,10 @@ Gitemplate.prototype.init = function() {
 };
 
 Gitemplate.prototype.onShellCmd = function(method, args, ret) {
-  util.debug(sprintf('%s(%s)', method, JSON.stringify(args)));
+  util.debug(sprintf( // Use debug() over log() to block.
+    '[%s] %s(%s)',
+    (new Date()).toUTCString(), method, JSON.stringify(args)
+  ));
 };
 
 /**
