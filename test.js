@@ -58,7 +58,7 @@ describe('gitemplate', function() {
       stub.should.have.been.calledWithExactly('-rf', '/dst/.git');
     });
 
-    it('should replace content "name" var', function() {
+    it('should replace content built-in name var', function() {
       var stub = this.stub(shelljs, 'exec');
       stub.returns(this.resOK);
       var res = this.gt.replaceContentVars();
@@ -122,7 +122,7 @@ describe('gitemplate', function() {
       res.should.deep.equal(this.resOK);
     });
 
-    it('should replace file "name" var', function() {
+    it('should replace built-in name vars in files', function() {
       this.stubFile('/dst').readdir([
         this.stubFile('/dst/gitemplate_name.js')
       ]).make();
@@ -133,7 +133,38 @@ describe('gitemplate', function() {
       );
     });
 
-    it('should replace custom name vars', function() {
+    it('should replace built-in name vars in dirs', function() {
+      this.stubFile('/dst').readdir([
+        this.stubFile('/dst/gitemplate_name').readdir([
+          this.stubFile('/dst/gitemplate_name/index.js')
+        ])
+      ]).make();
+      var stub = this.stub(shelljs, 'mv');
+      this.gt.replaceNameVars();
+      stub.should.have.been.calledWithExactly(
+        '/dst/gitemplate_name', '/dst/my-new-proj'
+      );
+    });
+
+    it('should replace built-in name vars in dirs before files', function() {
+      this.stubFile('/dst').readdir([
+        this.stubFile('/dst/bin/gitemplate_name'),
+        this.stubFile('/dst/lib/gitemplate_name').readdir([
+          this.stubFile('/dst/lib/gitemplate_name/index.js')
+        ])
+      ]).make();
+      var spy = this.spy(shelljs, 'mv');
+      this.gt.replaceNameVars();
+      spy.args.length.should.equal(2);
+      spy.args[0].should.deep.equal([
+        '/dst/lib/gitemplate_name', '/dst/lib/my-new-proj'
+      ]);
+      spy.args[1].should.deep.equal([
+        '/dst/bin/gitemplate_name', '/dst/bin/my-new-proj'
+      ]);
+    });
+
+    it('should replace custom name vars in files', function() {
       this.stubFile('/dst').readdir([
         this.stubFile('/dst/gitemplate_m1.js'),
         this.stubFile('/dst/gitemplate_m2.js')
@@ -142,6 +173,30 @@ describe('gitemplate', function() {
       var res = this.gt.replaceNameVars();
       stub.should.have.been.calledWithExactly('/dst/gitemplate_m1.js', '/dst/v1.js');
       stub.should.have.been.calledWithExactly('/dst/gitemplate_m2.js', '/dst/v2.js');
+    });
+
+    it('should replace custom name vars in dirs', function() {
+      this.stubFile('/dst').readdir([
+        this.stubFile('/dst/gitemplate_m1/index.js'),
+        this.stubFile('/dst/gitemplate_m2/index.js')
+      ]).make();
+      var stub = this.stub(shelljs, 'mv');
+      var res = this.gt.replaceNameVars();
+      stub.should.have.been.calledWithExactly('/dst/gitemplate_m1/index.js', '/dst/v1/index.js');
+      stub.should.have.been.calledWithExactly('/dst/gitemplate_m2/index.js', '/dst/v2/index.js');
+    });
+
+    it('should replace custom name vars in dirs before files', function() {
+      this.stubFile('/dst').readdir([
+        this.stubFile('/dst/bin/gitemplate_m1'),
+        this.stubFile('/dst/lib/gitemplate_m2').readdir([
+          this.stubFile('/dst/lib/gitemplate_m2/index.js')
+        ])
+      ]).make();
+      var stub = this.stub(shelljs, 'mv');
+      var res = this.gt.replaceNameVars();
+      stub.args[2].should.deep.equal(['/dst/lib/gitemplate_m2', '/dst/lib/v2']);
+      stub.args[3].should.deep.equal(['/dst/bin/gitemplate_m1', '/dst/bin/v1']);
     });
 
     it('should init repo', function() {
