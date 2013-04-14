@@ -1,7 +1,6 @@
 var sinon = require('sinon');
 var chai = require('chai');
 var shelljs = require('shelljs');
-var fs = require('fs');
 var util = require('util');
 var sprintf = util.format;
 
@@ -11,10 +10,9 @@ chai.use(require('sinon-chai'));
 
 var gitemplate = require('./dist/gitemplate');
 var Gitemplate = gitemplate.Gitemplate;
-var requireComponent = gitemplate.require;
 
-requireComponent('sinon-doublist')(sinon, 'mocha');
-requireComponent('sinon-doublist-fs')(fs, 'mocha');
+require('sinon-doublist').sinonDoublist(sinon, 'mocha');
+require('sinon-doublist-fs').sinonDoublistFs('mocha');
 
 describe('gitemplate', function() {
   before(function() {

@@ -308,20 +308,38 @@
             var name = this.get("name");
             var dst = this.get("dst");
             var nameVar = TMPL_VAR("name");
-            var targets = shelljs._("find", dst).filter(function(file) {
-                return file.match(nameVar);
-            });
-            targets.forEach(function(target) {
+            function mvNameVar(target) {
                 shelljs._("mv", target, target.replace(nameVar, name));
+            }
+            var targets = shelljs._("find", dst).filter(function(file) {
+                return shelljs._("test", "-d", file) && file.match(nameVar);
             });
+            targets.forEach(mvNameVar);
+            targets = shelljs._("find", dst).filter(function(file) {
+                return shelljs._("test", "-f", file) && file.match(nameVar);
+            });
+            targets.forEach(mvNameVar);
             var json = this.get("json");
-            Object.keys(json).forEach(function(key) {
-                var targets = shelljs._("find", dst).filter(function(file) {
-                    return file.match(ESC_TMPL_VAR(key));
-                });
-                targets.forEach(function(target) {
+            var jsonKeys = Object.keys(json);
+            jsonKeys.forEach(function(key) {
+                var escapedKey = ESC_TMPL_VAR(key);
+                function mvJsonVar(target) {
                     shelljs._("mv", target, target.replace(TMPL_VAR(key), json[key]));
+                }
+                var targets = shelljs._("find", dst).filter(function(file) {
+                    return shelljs._("test", "-d", file) && file.match(escapedKey);
                 });
+                targets.forEach(mvJsonVar);
+            });
+            jsonKeys.forEach(function(key) {
+                var escapedKey = ESC_TMPL_VAR(key);
+                function mvJsonVar(target) {
+                    shelljs._("mv", target, target.replace(TMPL_VAR(key), json[key]));
+                }
+                var targets = shelljs._("find", dst).filter(function(file) {
+                    return shelljs._("test", "-f", file) && file.match(escapedKey);
+                });
+                targets.forEach(mvJsonVar);
             });
         };
         Gitemplate.prototype.initRepo = function() {
