@@ -147,7 +147,7 @@ describe('gitemplate', function() {
     it('should replace built-in name vars in dirs before files', function() {
       this.stubFile('/dst').readdir([
         this.stubFile('/dst/bin').readdir([
-          this.stubFile('/dst/bin/gitemplate_name'),
+          this.stubFile('/dst/bin/gitemplate_name')
         ]),
         this.stubFile('/dst/lib').readdir([
           this.stubFile('/dst/lib/gitemplate_name').readdir([
@@ -195,7 +195,7 @@ describe('gitemplate', function() {
     it('should replace custom name vars in dirs before files', function() {
       this.stubFile('/dst').readdir([
         this.stubFile('/dst/bin').readdir([
-          this.stubFile('/dst/bin/gitemplate_m1'),
+          this.stubFile('/dst/bin/gitemplate_m1')
         ]),
         this.stubFile('/dst/lib').readdir([
           this.stubFile('/dst/lib/gitemplate_m2').readdir([
