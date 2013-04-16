@@ -11,7 +11,7 @@ chai.use(require('sinon-chai'));
 var gitemplate = require('./dist/gitemplate');
 var Gitemplate = gitemplate.Gitemplate;
 
-require('sinon-doublist').sinonDoublist(sinon, 'mocha');
+require('sinon-doublist').sinonDoublist('mocha');
 require('sinon-doublist-fs').sinonDoublistFs('mocha');
 
 describe('gitemplate', function() {
