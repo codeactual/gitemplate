@@ -10,8 +10,8 @@ chai.use(require('sinon-chai'));
 var gitemplate = require('../../..');
 var Gitemplate = gitemplate.Gitemplate;
 
-require('sinon-doublist').sinonDoublist('mocha');
-require('sinon-doublist-fs').sinonDoublistFs('mocha');
+require('sinon-doublist')('mocha');
+require('sinon-doublist-fs')('mocha');
 
 describe('gitemplate', function() {
   before(function() {
