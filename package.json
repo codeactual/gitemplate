@@ -1,10 +1,10 @@
 {
   "name": "gitemplate",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Git cloning with template variables",
   "main": "index.js",
   "scripts": {
-    "test": "grunt build && mocha --reporter spec test.js"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,6 @@
     "mocha": "~1.8.2",
     "sinon": "~1.6.0",
     "grunt": "~0.4.1",
-    "grunt-cli": "~0.1.6",
     "grunt-contrib-jshint": "~0.3.0",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-shell": "~0.2.1",
@@ -33,9 +32,9 @@
   },
   "dependencies": {
     "commander": "~1.1.1",
-    "component": "~0.13.1",
+    "component": "~0.13.2",
     "codeactual-node-console": "~0.1.0",
-    "shelljs": "~0.1.2"
+    "outer-shelljs": "~0.3.0"
   },
   "preferGlobal": true,
   "bin": "./bin/gitemplate"

@@ -106,13 +106,9 @@ node.js example that installs all dependencies and runs the unit tests:
 
 ### [Component](https://github.com/component/component)
 
-Install to `components/`:
+### [NPM](https://npmjs.org/package/gitemplate)
 
-    $ component install codeactual/gitemplate
-
-Build new standalone file:
-
-    $ grunt dist
+    npm install gitemplate
 
 ## CLI
 
@@ -182,11 +178,4 @@ this.gt.cloneRepo();
 
 ## Tests
 
-    npm install --devDependencies
     npm test
-
-## Change Log
-
-### 0.1.0
-
-* Initial API to support: `--name`, `--src`, `--dst`, `--desc`, `--repo`, `--json`.

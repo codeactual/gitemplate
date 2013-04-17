@@ -2,7 +2,7 @@
   "name": "gitemplate",
   "repo": "codeactual/gitemplate",
   "description": "Git cloning with template variables",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "keywords": [
     "component",
     "package",
@@ -12,12 +12,12 @@
   "dependencies": {
     "visionmedia/configurable.js": "f87ca5f",
     "component/escape-regexp": "1.0.2",
-    "codeactual/outer-shelljs": "0.2.0"
+    "codeactual/extend": "0.1.0"
   },
-  "development": {
-  },
+  "development": {},
+  "main": "lib/component/main.js",
   "scripts": [
-    "index.js"
+    "lib/component/main.js"
   ],
   "license": "MIT"
 }

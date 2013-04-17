@@ -5,11 +5,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-shell');
 
+  var mochaShelljsOpt = {stdout: true, stderr: true};
+
   grunt.initConfig({
     jshint: {
       src: {
         files: {
-          src: ['index.js']
+          src: ['index.js', 'lib/**/*.js']
         }
       },
       grunt: {
@@ -22,7 +24,7 @@ module.exports = function(grunt) {
           expr: true
         },
         files: {
-          src: ['test.js']
+          src: ['test/lib/**/*.js']
         }
       },
       json: {
@@ -45,20 +47,26 @@ module.exports = function(grunt) {
     },
     shell: {
       options: {
-        failOnError: true,
-        stdout: true,
-        stderr: true
+        failOnError: true
       },
       build: {
         command: 'component install --dev && component build --standalone gitemplate --name gitemplate --out dist --dev'
       },
       dist: {
         command: 'component build --standalone gitemplate --name gitemplate --out dist'
+      },
+      shrinkwrap: {
+        command: 'npm shrinkwrap'
+      },
+      test_lib: {
+        options: mochaShelljsOpt,
+        command: "mocha --colors --reporter spec --recursive test/lib"
       }
     }
   });
 
   grunt.registerTask('default', ['jshint']);
   grunt.registerTask('build', ['shell:build']);
-  grunt.registerTask('dist', ['shell:dist', 'uglify:dist']);
+  grunt.registerTask('dist', ['default', 'shell:dist', 'uglify:dist', 'shell:shrinkwrap']);
+  grunt.registerTask('test', ['build', 'shell:test_lib']);
 };
