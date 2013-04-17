@@ -125,9 +125,7 @@ describe('gitemplate', function() {
     });
 
     it('should replace built-in name vars in files', function() {
-      this.stubFile('/dst').readdir([
-        this.stubFile('/dst/gitemplate_name.js')
-      ]).make();
+      this.stubTree('/dst/gitemplate_name.js');
       var spy = this.spy(this.gt.shelljs, '_');
       this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly(
@@ -137,11 +135,7 @@ describe('gitemplate', function() {
     });
 
     it('should replace built-in name vars in dirs', function() {
-      this.stubFile('/dst').readdir([
-        this.stubFile('/dst/gitemplate_name').readdir([
-          this.stubFile('/dst/gitemplate_name/index.js')
-        ])
-      ]).make();
+      this.stubTree('/dst/gitemplate_name/index.js');
       var spy = this.spy(this.gt.shelljs, '_');
       this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly(
@@ -150,16 +144,7 @@ describe('gitemplate', function() {
     });
 
     it('should replace built-in name vars in dirs before files', function() {
-      this.stubFile('/dst').readdir([
-        this.stubFile('/dst/bin').readdir([
-          this.stubFile('/dst/bin/gitemplate_name')
-        ]),
-        this.stubFile('/dst/lib').readdir([
-          this.stubFile('/dst/lib/gitemplate_name').readdir([
-            this.stubFile('/dst/lib/gitemplate_name/index.js')
-          ])
-        ])
-      ]).make();
+      this.stubTree(['/dst/bin/gitemplate_name', '/dst/lib/gitemplate_name/index.js']);
       var spy = this.spy(this.gt.shelljs, '_');
       this.gt.replaceNameVars();
       spy.should.have.been.calledWith(
@@ -171,10 +156,7 @@ describe('gitemplate', function() {
     });
 
     it('should replace custom name vars in files', function() {
-      this.stubFile('/dst').readdir([
-        this.stubFile('/dst/gitemplate_m1.js'),
-        this.stubFile('/dst/gitemplate_m2.js')
-      ]).make();
+      this.stubTree(['/dst/gitemplate_m1.js', '/dst/gitemplate_m2.js']);
       var spy = this.spy(this.gt.shelljs, '_');
       var res = this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly('mv', '/dst/gitemplate_m1.js', '/dst/v1.js');
@@ -182,14 +164,7 @@ describe('gitemplate', function() {
     });
 
     it('should replace custom name vars in dirs', function() {
-      this.stubFile('/dst').readdir([
-        this.stubFile('/dst/gitemplate_m1').readdir([
-          this.stubFile('/dst/gitemplate_m1/index.js')
-        ]),
-        this.stubFile('/dst/gitemplate_m2').readdir([
-          this.stubFile('/dst/gitemplate_m2/index.js')
-        ])
-      ]).make();
+      this.stubTree(['/dst/gitemplate_m1/index.js', '/dst/gitemplate_m2/index.js']);
       var spy = this.spy(this.gt.shelljs, '_');
       var res = this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly('mv', '/dst/gitemplate_m1', '/dst/v1');
@@ -197,16 +172,7 @@ describe('gitemplate', function() {
     });
 
     it('should replace custom name vars in dirs before files', function() {
-      this.stubFile('/dst').readdir([
-        this.stubFile('/dst/bin').readdir([
-          this.stubFile('/dst/bin/gitemplate_m1')
-        ]),
-        this.stubFile('/dst/lib').readdir([
-          this.stubFile('/dst/lib/gitemplate_m2').readdir([
-            this.stubFile('/dst/lib/gitemplate_m2/index.js')
-          ])
-        ])
-      ]).make();
+      this.stubTree(['/dst/bin/gitemplate_m1', '/dst/lib/gitemplate_m2/index.js']);
       var spy = this.spy(this.gt.shelljs, '_');
       var res = this.gt.replaceNameVars();
       spy.should.have.been.calledWith('mv', '/dst/lib/gitemplate_m2', '/dst/lib/v2');
