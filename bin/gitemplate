@@ -8,7 +8,6 @@
 
 var util = require('util');
 var cli = require('commander');
-var Gitemplate = require(__dirname + '/../dist/gitemplate').Gitemplate;
 
 cli
   .option('-n, --name <project name>', 'my-new-proj', String)
@@ -20,7 +19,7 @@ cli
   .option('-v, --verbose')
   .parse(process.argv);
 
-var gt = new Gitemplate();
+var gt = require('..').create();
 gt
   .set('name', cli.name)
   .set('src', cli.src)
@@ -29,7 +28,6 @@ gt
   .set('json', JSON.parse(cli.json))
   .set('repo', cli.repo)
   .set('verbose', cli.verbose)
-  .set('nativeRequire', require)
   .init();
 
 function abort(msg, code) {
