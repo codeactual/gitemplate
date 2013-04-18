@@ -33,6 +33,7 @@
   "dependencies": {
     "commander": "~1.1.1",
     "component": "~0.13.2",
+    "codeactual-cli-mod": "~0.1.0",
     "codeactual-node-console": "~0.1.0",
     "outer-shelljs": "~0.3.0"
   },

@@ -6,10 +6,9 @@
  * Copyright (c) 2013 David Smith <https://github.com/codeactual/>
  */
 
-var util = require('util');
-var cli = require('commander');
+var commander = require('commander');
 
-cli
+commander
   .option('-n, --name <project name>', 'my-new-proj', String)
   .option('-s, --src <source repo>', 'git@github.com:me/one-of-my-templates.git', String)
   .option('-d, --dst <destination dir>', '~/dev/my-new-proj', String)
@@ -19,43 +18,4 @@ cli
   .option('-v, --verbose')
   .parse(process.argv);
 
-var gt = require('..').create();
-gt
-  .set('name', cli.name)
-  .set('src', cli.src)
-  .set('dst', cli.dst)
-  .set('desc', cli.desc)
-  .set('json', JSON.parse(cli.json))
-  .set('repo', cli.repo)
-  .set('verbose', cli.verbose)
-  .init();
-
-function abort(msg, code) {
-  util.error(msg);
-  process.exit(typeof code === 'undefined' ? 1 : code);
-}
-
-function abortOnErrorResult(res) {
-  if (res.code !== 0) { abort(res.output, res.code); }
-}
-
-var requiredParams = ['name', 'src', 'dst'];
-requiredParams.forEach(function(param) {
-  if (!cli[param]) { abort('--' + param + ' required'); }
-});
-
-abortOnErrorResult(gt.cloneRepo());
-
-gt.set('originSha', gt.getRepoOriginSha());
-gt.set('originUrl', gt.getRepoOriginUrl());
-
-gt.rmGitDir();
-abortOnErrorResult(gt.replaceContentVars());
-gt.replaceNameVars();
-
-if (cli.repo) {
-  abortOnErrorResult(gt.initRepo());
-  abortOnErrorResult(gt.setGithubOrigin());
-}
-
-abortOnErrorResult(gt.runPostReplace());
+require('codeactual-cli-mod').create().run(commander, require('../lib/cli/gitemplate'));
