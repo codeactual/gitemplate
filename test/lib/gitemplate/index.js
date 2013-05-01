@@ -11,7 +11,6 @@ var gitemplate = require('../../..');
 var Gitemplate = gitemplate.Gitemplate;
 
 require('sinon-doublist')(sinon, 'mocha');
-require('sinon-doublist-fs')('mocha');
 
 describe('gitemplate', function() {
   before(function() {
@@ -41,6 +40,12 @@ describe('gitemplate', function() {
         .set('json', this.json)
         .set('repo', this.repo)
         .init();
+
+      require('sinon-doublist-fs')(this);
+    });
+
+    afterEach(function() {
+      this.restoreFs();
     });
 
     it('should clone repo', function() {

@@ -144,33 +144,7 @@ this.gt
 this.gt.cloneRepo();
 ```
 
-### #cloneRepo()
-
-> `git clone` wrapper.
-
-### #rmGitDir()
-
-> Prep for new init and remote origin.
-
-### #replaceContentVars()
-
-> Replace vars found in repo file content.
-
-### #replaceNameVars()
-
-> Replace vars found in repo file names.
-
-### #init()
-
-> Apply collected configuration.
-
-### #initRepo()
-
-> `git init` wrapper.
-
-### #setGithubOrigin()
-
-> Set GitHub remote origin.
+[Documentation](docs/Gitemplate.md)
 
 ## License
 
