@@ -104,8 +104,6 @@ node.js example that installs all dependencies and runs the unit tests:
 
 ## Installation
 
-### [Component](https://github.com/component/component)
-
 ### [NPM](https://npmjs.org/package/gitemplate)
 
     npm install gitemplate
@@ -132,15 +130,14 @@ node.js example that installs all dependencies and runs the unit tests:
 ### Example
 
 ```js
-this.gt = new Gitemplate();
+this.gt = gitemplate.create();
 this.gt
   .set('name', this.name)
   .set('src', this.src)
   .set('dst', this.dst)
   .set('desc', this.desc)
   .set('json', this.json)
-  .set('repo', this.repo)
-  .set('nativeRequire', require).init();
+  .set('repo', this.repo);
 this.gt.cloneRepo();
 ```
 
