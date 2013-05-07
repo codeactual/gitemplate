@@ -11,9 +11,9 @@
     "url": "https://github.com/codeactual/gitemplate.git"
   },
   "keywords": [
-    "component",
-    "package",
-    "scaffolding",
+    "git",
+    "scaffold",
+    "template",
     "generator"
   ],
   "author": "David Smith",

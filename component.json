@@ -4,9 +4,9 @@
   "description": "Git cloning with template variables",
   "version": "0.2.0",
   "keywords": [
-    "component",
-    "package",
-    "scaffolding",
+    "git",
+    "scaffold",
+    "template",
     "generator"
   ],
   "dependencies": {
