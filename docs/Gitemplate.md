@@ -21,7 +21,7 @@ _Source: [lib/gitemplate/index.js](../lib/gitemplate/index.js)_
 
 # exports.create()
 
-> Create a new Gitemplate.
+> Create a new [Gitemplate](#gitemplate).
 
 **Return:**
 
@@ -29,7 +29,7 @@ _Source: [lib/gitemplate/index.js](../lib/gitemplate/index.js)_
 
 # exports.extend(ext)
 
-> Extend Gitemplate.prototype.
+> Extend [Gitemplate](#gitemplate).prototype.
 
 **Parameters:**
 
