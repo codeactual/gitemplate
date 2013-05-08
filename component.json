@@ -2,7 +2,7 @@
   "name": "gitemplate",
   "repo": "codeactual/gitemplate",
   "description": "Git cloning with template variables",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "keywords": [
     "git",
     "scaffold",

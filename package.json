@@ -1,6 +1,6 @@
 {
   "name": "gitemplate",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Git cloning with template variables",
   "main": "index.js",
   "scripts": {
@@ -29,14 +29,14 @@
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-shell": "~0.2.1",
     "sinon-chai": "~2.3.1",
-    "sinon-doublist": "~0.3.0",
-    "sinon-doublist-fs": "~0.2.0"
+    "sinon-doublist": "~0.3.2",
+    "sinon-doublist-fs": "~0.2.2"
   },
   "dependencies": {
     "commander": "~1.1.1",
     "impulse-bin": "~0.1.0",
-    "long-con": "~0.1.0",
-    "outer-shelljs": "~0.3.0"
+    "long-con": "~0.1.1",
+    "outer-shelljs": "~0.3.2"
   },
   "preferGlobal": true,
   "bin": "./bin/gitemplate"

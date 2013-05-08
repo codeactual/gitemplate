@@ -1,3 +1,8 @@
+# 0.2.2
+
+* Upgrade `long-con` to `0.1.2`.
+* Upgrade `outer-shelljs` to `0.3.2`.
+
 # 0.2.1
 
 * Remove NPM shrinkwrapping.
