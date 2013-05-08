@@ -1,3 +1,7 @@
+# 0.2.3
+
+* Upgrade `apidox`, `long-con`, `impulse-bin`. `outer-shelljs`.
+
 # 0.2.2
 
 * Upgrade `long-con` to `0.1.2`.
