@@ -96,8 +96,8 @@ node.js example that installs all dependencies and runs the unit tests:
 
 ## API
 
-[Example](lib/cli/gitemplate/index.js)
-[Documentation](docs/Gitemplate.md)
+* [Example](lib/cli/gitemplate/index.js)
+* [Documentation](docs/Gitemplate.md)
 
 ## License
 
