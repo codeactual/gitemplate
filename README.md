@@ -25,21 +25,7 @@ Git cloning with template variables.
                --desc 'gets it done' \
                --repo me/my-new-project
 
-### Custom variables via `--json`
-
-    gitemplate --name my-new-project \
-               --src git@github.com:me/my-old-template.git \
-               --dst ~/dev/my-new-project \
-               --desc 'gets it done' \
-               --json '{"customVar1":"val1","customVar2":"val2"}' \
-
-### Template Repos
-
-[![Build Status](https://travis-ci.org/codeactual/gitemplate-node-component.png)](https://travis-ci.org/codeactual/gitemplate-node-component) [node component](https://github.com/codeactual/gitemplate-node-component)
-
-[![Build Status](https://travis-ci.org/codeactual/gitemplate-node-bin-component.png)](https://travis-ci.org/codeactual/gitemplate-node-bin-component) [node component w/ bin script](https://github.com/codeactual/gitemplate-node-bin-component)
-
-[![Build Status](https://travis-ci.org/codeactual/gitemplate-connect-middleware.png)](https://travis-ci.org/codeactual/gitemplate-connect-middleware) [connect middleware component](https://github.com/codeactual/gitemplate-connect-middleware)
+[More](docs/examples.md)
 
 ## Built-in variables
 
@@ -108,29 +94,10 @@ node.js example that installs all dependencies and runs the unit tests:
 
     npm install gitemplate
 
-## CLI
-
-    -h, --help                              output usage information
-    -v, --verbose
-
-### Required
-
-    -n, --name <project name>               my-new-proj
-    -s, --src <source repo>                 git@github.com:me/one-of-my-templates.git
-    -d, --dst <destination dir>             ~/dev/my-new-proj
-
-### Optional
-
-    -D, --desc <project description>        gets it done
-    -r, --repo <user/project>               set gitemplate.repo and auto init/remote
-    -j, --json <custom template variables>  '{"k1":"v1","k2":"v2",...}'
-
 ## API
 
-### Example
-
 ```js
-this.gt = gitemplate.create();
+this.gt = require('gitemplate').create();
 this.gt
   .set('name', this.name)
   .set('src', this.src)
