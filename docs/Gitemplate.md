@@ -101,7 +101,11 @@ gt.cloneRepo();
 
 # Gitemplate.prototype.initRepo()
 
-> @return {object} `shelljs.exec()` result
+> Initialize a repo in the clone dir.
+
+**Return:**
+
+`{object}` `shelljs.exec()` result
 
 # Gitemplate.prototype.setGithubOrigin()
 
