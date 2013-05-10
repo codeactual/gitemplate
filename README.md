@@ -96,18 +96,7 @@ node.js example that installs all dependencies and runs the unit tests:
 
 ## API
 
-```js
-this.gt = require('gitemplate').create();
-this.gt
-  .set('name', this.name)
-  .set('src', this.src)
-  .set('dst', this.dst)
-  .set('desc', this.desc)
-  .set('json', this.json)
-  .set('repo', this.repo);
-this.gt.cloneRepo();
-```
-
+[Example](lib/cli/gitemplate/index.js)
 [Documentation](docs/Gitemplate.md)
 
 ## License
