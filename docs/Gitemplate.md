@@ -59,12 +59,14 @@ gt.cloneRepo();
 
 **Configuration:**
 
-- `{string} name` `gitemplate_name` replacement value
 - `{string} desc` `gitemplate_desc` replacement value
+- `{string} dst` Clone path
 - `{object} json` Replacement key/value pairs from `--json`
-- `{string} year` `gitemplate_year` replacement value
+- `{string} name` `gitemplate_name` replacement value
 - `{string} originSha` `gitemplate_originSha` replacement value
 - `{string} originUrl` `gitemplate_originUrl` replacement value
+- `{string} src` Source repository URL/path
+- `{string} year` `gitemplate_year` replacement value
 
 **Properties:**
 
