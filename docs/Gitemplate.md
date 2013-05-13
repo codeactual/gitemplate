@@ -4,18 +4,18 @@ _Source: [lib/gitemplate/index.js](../lib/gitemplate/index.js)_
 
 <a name="tableofcontents"></a>
 
-- <a name="toc_exports"></a>[exports.Gitemplate](#exportsgitemplate)
-- [exports.create](#exportscreate)
-- [exports.extend](#exportsextendext)
+- <a name="toc_exportsgitemplate"></a><a name="toc_exports"></a>[exports.Gitemplate](#exportsgitemplate)
+- <a name="toc_exportscreate"></a>[exports.create](#exportscreate)
+- <a name="toc_exportsextendext"></a>[exports.extend](#exportsextendext)
 - <a name="toc_gitemplate"></a>[Gitemplate](#gitemplate)
-- <a name="toc_gitemplateprototype"></a>[Gitemplate.prototype.init](#gitemplateprototypeinit)
-- [Gitemplate.prototype.cloneRepo](#gitemplateprototypeclonerepo)
-- [Gitemplate.prototype.rmGitDir](#gitemplateprototypermgitdir)
-- [Gitemplate.prototype.replaceContentVars](#gitemplateprototypereplacecontentvars)
-- [Gitemplate.prototype.replaceNameVars](#gitemplateprototypereplacenamevars)
-- [Gitemplate.prototype.initRepo](#gitemplateprototypeinitrepo)
-- [Gitemplate.prototype.setGithubOrigin](#gitemplateprototypesetgithuborigin)
-- [Gitemplate.prototype.runPostReplace](#gitemplateprototyperunpostreplace)
+- <a name="toc_gitemplateprototypeinit"></a><a name="toc_gitemplateprototype"></a>[Gitemplate.prototype.init](#gitemplateprototypeinit)
+- <a name="toc_gitemplateprototypeclonerepo"></a>[Gitemplate.prototype.cloneRepo](#gitemplateprototypeclonerepo)
+- <a name="toc_gitemplateprototypermgitdir"></a>[Gitemplate.prototype.rmGitDir](#gitemplateprototypermgitdir)
+- <a name="toc_gitemplateprototypereplacecontentvars"></a>[Gitemplate.prototype.replaceContentVars](#gitemplateprototypereplacecontentvars)
+- <a name="toc_gitemplateprototypereplacenamevars"></a>[Gitemplate.prototype.replaceNameVars](#gitemplateprototypereplacenamevars)
+- <a name="toc_gitemplateprototypeinitrepo"></a>[Gitemplate.prototype.initRepo](#gitemplateprototypeinitrepo)
+- <a name="toc_gitemplateprototypesetgithuborigin"></a>[Gitemplate.prototype.setGithubOrigin](#gitemplateprototypesetgithuborigin)
+- <a name="toc_gitemplateprototyperunpostreplace"></a>[Gitemplate.prototype.runPostReplace](#gitemplateprototyperunpostreplace)
 
 <a name="exports"></a>
 
