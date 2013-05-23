@@ -1,3 +1,7 @@
+# 0.2.4
+
+* chore(npm): Upgrade outdated dev dependencies
+
 # 0.2.3
 
 * Upgrade `apidox`, `long-con`, `impulse-bin`. `outer-shelljs`.

@@ -137,8 +137,11 @@
         };
     });
     require.alias("visionmedia-configurable.js/index.js", "gitemplate/deps/configurable.js/index.js");
+    require.alias("visionmedia-configurable.js/index.js", "configurable.js/index.js");
     require.alias("component-escape-regexp/index.js", "gitemplate/deps/escape-regexp/index.js");
+    require.alias("component-escape-regexp/index.js", "escape-regexp/index.js");
     require.alias("codeactual-extend/index.js", "gitemplate/deps/extend/index.js");
+    require.alias("codeactual-extend/index.js", "extend/index.js");
     require.alias("gitemplate/lib/component/main.js", "gitemplate/index.js");
     if (typeof exports == "object") {
         module.exports = require("gitemplate");
@@ -147,6 +150,6 @@
             return require("gitemplate");
         });
     } else {
-        window["gitemplate"] = require("gitemplate");
+        this["gitemplate"] = require("gitemplate");
     }
 })();
