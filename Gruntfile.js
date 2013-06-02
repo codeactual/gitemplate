@@ -3,9 +3,9 @@ module.exports = function(grunt) {
 
   require('grunt-horde')
     .create(grunt)
-    .demand('projName', 'gitemplate')
-    .demand('instanceName', 'gitemplate')
-    .demand('klassName', 'Gitemplate')
+    .demand('initConfig.projName', 'gitemplate')
+    .demand('initConfig.instanceName', 'gitemplate')
+    .demand('initConfig.klassName', 'Gitemplate')
     .loot('node-component-grunt')
     .attack();
 };
