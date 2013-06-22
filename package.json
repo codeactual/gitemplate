@@ -41,5 +41,8 @@
     "outer-shelljs": "~0.3.4"
   },
   "preferGlobal": true,
-  "bin": "./bin/gitemplate"
+  "bin": "./bin/gitemplate",
+  "devdir-ci": {
+    "version": 1
+  }
 }
