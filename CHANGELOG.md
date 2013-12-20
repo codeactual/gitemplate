@@ -1,3 +1,7 @@
+# 0.2.5
+
+* fix: Merge [pull 2](https://github.com/codeactual/gitemplate/pull/2)
+
 # 0.2.4
 
 * chore(npm): Upgrade outdated dev dependencies
