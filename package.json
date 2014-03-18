@@ -1,6 +1,6 @@
 {
   "name": "gitemplate",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Git cloning with template variables",
   "main": "index.js",
   "scripts": {

@@ -1,3 +1,7 @@
+# 0.2.7
+
+- fix(files/dirs): Replace custom vars w/ case-insensitive matching
+
 # 0.2.6
 
 - chore(npm): Upgrade outdated deps
