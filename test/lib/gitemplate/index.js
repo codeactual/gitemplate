@@ -184,6 +184,22 @@ describe('gitemplate', function() {
       spy.should.have.been.calledWith('mv', '/dst/bin/gitemplate_m1', '/dst/bin/v1');
     });
 
+    it('should replace case-insensitive custom name vars in files', function() {
+      this.stubTree(['/dst/Gitemplate_m1.js', '/dst/Gitemplate_m2.js']);
+      var spy = this.spy(this.gt.shelljs, '_');
+      var res = this.gt.replaceNameVars();
+      spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m1.js', '/dst/v1.js');
+      spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m2.js', '/dst/v2.js');
+    });
+
+    it('should replace case-insensitive custom name vars in dirs', function() {
+      this.stubTree(['/dst/Gitemplate_m1/index.js', '/dst/Gitemplate_m2/index.js']);
+      var spy = this.spy(this.gt.shelljs, '_');
+      var res = this.gt.replaceNameVars();
+      spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m1', '/dst/v1');
+      spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m2', '/dst/v2');
+    });
+
     it('should init repo', function() {
       var stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns(this.resOK);
