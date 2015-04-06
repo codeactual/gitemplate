@@ -32,6 +32,8 @@ describe('gitemplate', function() {
 
   describe('Gitemplate', function() {
     beforeEach(function() {
+      this.clock = this.sandbox.useFakeTimers();
+
       this.gt = new Gitemplate();
       this.gt
         .set('name', this.name)
