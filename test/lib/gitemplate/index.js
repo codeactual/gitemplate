@@ -1,14 +1,15 @@
-var sinon = require('sinon');
-var chai = require('chai');
-var util = require('util');
-var sprintf = util.format;
+/*eslint func-names: 0, new-cap: 0, no-unused-expressions: 0, no-wrap-func: 0*/
+'use strict';
 
-var should = chai.should();
+const sinon = require('sinon');
+const chai = require('chai');
+
+chai.should();
 chai.Assertion.includeStack = true;
 chai.use(require('sinon-chai'));
 
-var gitemplate = require('../../..');
-var Gitemplate = gitemplate.Gitemplate;
+const gitemplate = require('../../..');
+const Gitemplate = gitemplate.Gitemplate;
 
 require('sinon-doublist')(sinon, 'mocha');
 
@@ -49,21 +50,21 @@ describe('gitemplate', function() {
     });
 
     it('should clone repo', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       this.gt.cloneRepo();
       stub.should.have.been.calledWith('exec', 'git clone /src /dst');
     });
 
     it('should remove .git/', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       this.gt.rmGitDir();
       stub.should.have.been.calledWithExactly('rm', '-rf', '/dst/.git');
     });
 
     it('should replace content built-in name var', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.returns(this.resOK);
-      var res = this.gt.replaceContentVars();
+      const res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         'exec',
         this.findCmdHead +
@@ -74,9 +75,9 @@ describe('gitemplate', function() {
     });
 
     it('should replace content "desc" var', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.returns(this.resOK);
-      var res = this.gt.replaceContentVars();
+      const res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         'exec',
         this.findCmdHead +
@@ -86,27 +87,27 @@ describe('gitemplate', function() {
       res.should.deep.equal(this.resOK);
     });
 
-    it('should ignore content "repo" var if value missing', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+    it('should ignore content "repo" const if value missing', function() {
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.returns(this.resOK);
       this.gt.set('repo', null);
-      var res = this.gt.replaceContentVars();
+      const res = this.gt.replaceContentVars();
       stub.should.not.have.been.calledWith('exec', this.findRepoCmd);
       res.should.deep.equal(this.resOK);
     });
 
-    it('should replace content "repo" var if value exists', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+    it('should replace content "repo" const if value exists', function() {
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns(this.resOK);
-      var res = this.gt.replaceContentVars();
+      const res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith('exec', this.findRepoCmd);
       res.should.deep.equal(this.resOK);
     });
 
     it('should replace content "year" var', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns(this.resOK);
-      var res = this.gt.replaceContentVars();
+      const res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         'exec',
         this.findCmdHead + 'gitemplate_year/1970' + this.findCmdFoot
@@ -115,9 +116,9 @@ describe('gitemplate', function() {
     });
 
     it('should replace custom content vars', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns(this.resOK);
-      var res = this.gt.replaceContentVars();
+      const res = this.gt.replaceContentVars();
       stub.should.have.been.calledWith(
         'exec',
         this.findCmdHead + 'gitemplate_m1/v1' + this.findCmdFoot
@@ -131,7 +132,7 @@ describe('gitemplate', function() {
 
     it('should replace built-in name vars in files', function() {
       this.stubTree('/dst/gitemplate_name.js');
-      var spy = this.spy(this.gt.shelljs, '_');
+      const spy = this.spy(this.gt.shelljs, '_');
       this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly(
         'mv',
@@ -141,7 +142,7 @@ describe('gitemplate', function() {
 
     it('should replace built-in name vars in dirs', function() {
       this.stubTree('/dst/gitemplate_name/index.js');
-      var spy = this.spy(this.gt.shelljs, '_');
+      const spy = this.spy(this.gt.shelljs, '_');
       this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly(
         'mv', '/dst/gitemplate_name', '/dst/my-new-proj'
@@ -150,7 +151,7 @@ describe('gitemplate', function() {
 
     it('should replace built-in name vars in dirs before files', function() {
       this.stubTree(['/dst/bin/gitemplate_name', '/dst/lib/gitemplate_name/index.js']);
-      var spy = this.spy(this.gt.shelljs, '_');
+      const spy = this.spy(this.gt.shelljs, '_');
       this.gt.replaceNameVars();
       spy.should.have.been.calledWith(
         'mv', '/dst/lib/gitemplate_name', '/dst/lib/my-new-proj'
@@ -162,57 +163,57 @@ describe('gitemplate', function() {
 
     it('should replace custom name vars in files', function() {
       this.stubTree(['/dst/gitemplate_m1.js', '/dst/gitemplate_m2.js']);
-      var spy = this.spy(this.gt.shelljs, '_');
-      var res = this.gt.replaceNameVars();
+      const spy = this.spy(this.gt.shelljs, '_');
+      this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly('mv', '/dst/gitemplate_m1.js', '/dst/v1.js');
       spy.should.have.been.calledWithExactly('mv', '/dst/gitemplate_m2.js', '/dst/v2.js');
     });
 
     it('should replace custom name vars in dirs', function() {
       this.stubTree(['/dst/gitemplate_m1/index.js', '/dst/gitemplate_m2/index.js']);
-      var spy = this.spy(this.gt.shelljs, '_');
-      var res = this.gt.replaceNameVars();
+      const spy = this.spy(this.gt.shelljs, '_');
+      this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly('mv', '/dst/gitemplate_m1', '/dst/v1');
       spy.should.have.been.calledWithExactly('mv', '/dst/gitemplate_m2', '/dst/v2');
     });
 
     it('should replace custom name vars in dirs before files', function() {
       this.stubTree(['/dst/bin/gitemplate_m1', '/dst/lib/gitemplate_m2/index.js']);
-      var spy = this.spy(this.gt.shelljs, '_');
-      var res = this.gt.replaceNameVars();
+      const spy = this.spy(this.gt.shelljs, '_');
+      this.gt.replaceNameVars();
       spy.should.have.been.calledWith('mv', '/dst/lib/gitemplate_m2', '/dst/lib/v2');
       spy.should.have.been.calledWith('mv', '/dst/bin/gitemplate_m1', '/dst/bin/v1');
     });
 
     it('should replace case-insensitive custom name vars in files', function() {
       this.stubTree(['/dst/Gitemplate_m1.js', '/dst/Gitemplate_m2.js']);
-      var spy = this.spy(this.gt.shelljs, '_');
-      var res = this.gt.replaceNameVars();
+      const spy = this.spy(this.gt.shelljs, '_');
+      this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m1.js', '/dst/v1.js');
       spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m2.js', '/dst/v2.js');
     });
 
     it('should replace case-insensitive custom name vars in dirs', function() {
       this.stubTree(['/dst/Gitemplate_m1/index.js', '/dst/Gitemplate_m2/index.js']);
-      var spy = this.spy(this.gt.shelljs, '_');
-      var res = this.gt.replaceNameVars();
+      const spy = this.spy(this.gt.shelljs, '_');
+      this.gt.replaceNameVars();
       spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m1', '/dst/v1');
       spy.should.have.been.calledWithExactly('mv', '/dst/Gitemplate_m2', '/dst/v2');
     });
 
     it('should init repo', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns(this.resOK);
-      var res = this.gt.initRepo();
+      const res = this.gt.initRepo();
       stub.should.have.been.calledWithExactly('cd', this.dst);
       stub.should.have.been.calledWith('exec', 'git init');
       res.should.deep.equal(this.resOK);
     });
 
     it('should set repo GitHub remote origin', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns(this.resOK);
-      var res = this.gt.setGithubOrigin();
+      const res = this.gt.setGithubOrigin();
       stub.should.have.been.calledWithExactly('cd', this.dst);
       stub.should.have.been.calledWith(
         'exec',
@@ -222,13 +223,13 @@ describe('gitemplate', function() {
     });
 
     it('should get repo sha', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns({output: '7858ada150cf927d6d8a6b3a7f8b63d9917d4185'});
       this.gt.getRepoOriginSha().should.equal('7858ada150');
     });
 
     it('should get remote origin url', function() {
-      var stub = this.stub(this.gt.shelljs, '_');
+      const stub = this.stub(this.gt.shelljs, '_');
       stub.withArgs('exec').returns({
         output:
           '* remote origin\n' +
