@@ -7,6 +7,7 @@
 
 ## non-breaking
 
+- refactor(component): Migrate to NPM-only deps
 - refactor(eslint): Migrate to eslint
 
 # 0.2.7
