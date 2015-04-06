@@ -45,7 +45,8 @@
   },
   "preferGlobal": true,
   "bin": "./bin/gitemplate",
-  "devdir-ci": {
-    "version": 1
-  }
+  "files": [
+    "index.js",
+    "lib"
+  ]
 }
