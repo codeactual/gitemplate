@@ -7,6 +7,9 @@
 
 ## non-breaking
 
+- fix(cli): check for name/src/dst earlier before read
+- fix(runPostReplace): incorrect return structure
+- fix(package.json): add "files" section, remove unused "devdir-ci" section
 - refactor(component): Migrate to NPM-only deps
 - refactor(eslint): Migrate to eslint
 
